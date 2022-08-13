@@ -1,0 +1,12 @@
+.aside {
+    min-width: 350px;
+    background-color: rgb(49, 49, 49);
+    padding: 20px;
+}
+
+.aside .uid {
+    color: white;
+    border: 1px solid var(--accent);
+    padding: 10px;
+    font-size: larger;
+}

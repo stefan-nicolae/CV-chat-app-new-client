@@ -1,0 +1,62 @@
+.chat {
+    height: 100%;
+    width: calc(100% - 350px);
+    padding: 20px;
+}
+
+.chat-main {
+    border: 1px solid var(--accent);
+    height: calc(90% - 20px);
+    margin-bottom: 20px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.message {
+    background-color: rgb(44, 44, 44);  
+    word-wrap: break-word;
+    max-width: 70%;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    color: white;
+    white-space: pre-line;
+}
+
+.message.them {
+    align-self: flex-end;
+}
+
+/* chat input */
+.chat-input {
+    border: 1px solid var(--accent);
+    height: 10%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.chat-input textarea {
+    height: 100%;
+    width: 100%;
+    background-color: unset;
+    border: unset;
+    color: white;
+    overflow-y: scroll;
+    resize: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.chat-input textarea::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.chat-input textarea {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.chat-input textarea:focus {
+    outline: none;
+}
+

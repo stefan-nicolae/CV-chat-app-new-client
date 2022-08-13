@@ -1,0 +1,32 @@
+:root {
+    --backgroundColor: #3d3d3d;
+    --accent: rgb(148, 126, 0);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: var(--backgroundColor);
+    height: 100vh;
+}
+
+.container-main {
+    display: flex;
+}
+
+.startup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    color: white;
+}
+
+.startup input {
+    width: 300px;
+}
