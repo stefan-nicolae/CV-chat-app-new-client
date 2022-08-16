@@ -14,7 +14,7 @@
     padding: 10px;
 }
 .message {
-    background-color: rgb(44, 44, 44);  
+    background-color: var(--darker-gray); 
     word-wrap: break-word;
     max-width: 70%;
     margin-bottom: 10px;
@@ -58,5 +58,41 @@
 
 .chat-input textarea:focus {
     outline: none;
+}
+
+.normal-file-embed {
+    cursor: pointer;
+    color: rgb(0, 175, 166);
+    text-decoration: underline;
+}
+
+.normal-file-embed:active {
+    color: var(--accent)
+}
+
+.video-file-embed, .image-file-embed {
+    max-width: 70%;
+    user-select: none;
+}
+
+.audio-file-embed {
+    width: 400px;
+    user-select: none;
+}
+
+.fullscreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: unset;
+    display: flex;
+    justify-content: center;
+    padding: unset;
+}
+
+.fullscreen .image-file-embed {
+    max-width: unset;
+    width: 80%;
 }
 

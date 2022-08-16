@@ -1,5 +1,6 @@
 :root {
-    --backgroundColor: #3d3d3d;
+    --dark-gray: #3d3d3d;
+    --darker-gray: #313131;
     --accent: rgb(148, 126, 0);
 }
 
@@ -10,7 +11,7 @@
 }
 
 .container {
-    background-color: var(--backgroundColor);
+    background-color: var(--dark-gray);
     height: 100vh;
 }
 

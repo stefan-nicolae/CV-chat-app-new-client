@@ -1,0 +1,65 @@
+.alert-files {
+    background-color: var(--darker-gray);
+    border: 1px solid var(--accent);
+    top: 50%;
+    left: 50%;
+    margin-left: -80px;
+    margin-top: -250px;
+    width: 500px;
+    height: 300px;
+    position: absolute;
+
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    justify-content: space-around;
+
+    padding: 10px;
+    padding-top: 20px;
+}
+
+.alert-files .file {
+    color: white;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    word-break: break-all;
+    position: relative;
+    border: 1px solid white;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+.alert-files .close-file {
+    cursor: pointer;
+}
+
+.alert-files p {
+    position: absolute;
+    width: 90px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.alert-files .file-embed {
+    width: 100%;
+}
+
+.alert-files audio.file-embed {
+    margin-top: 50px;
+}
+
+.alert-files .send-files {
+    position: fixed;
+    margin-left: 470px;
+    margin-top: 280px;
+    background-color: unset;
+    border: unset;
+    color: var(--accent);
+    padding: 5px;
+    cursor: pointer;
+    background-color: black;
+}
+
+.alert-files .send-files:hover {
+    color: white;
+}
