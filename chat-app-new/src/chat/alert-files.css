@@ -40,8 +40,13 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+.alert-files .file-msg-p {
+    display: none;
+}
+
 .alert-files .file-embed {
     width: 100%;
+    max-width: 100%;
 }
 
 .alert-files audio.file-embed {

@@ -62,6 +62,7 @@ export default function AlertFiles (props) {
     const [files, setFiles] = useState([])
     const alertFiles = useRef()
     const lastSeed = useRef()
+    let key = 0
 
     if(props.seed !== lastSeed.current) {
         lastSeed.current = props.seed
@@ -71,12 +72,7 @@ export default function AlertFiles (props) {
     useEffect(() => {
         props.handleFileDrop(alertFiles.current)
     }, [])
-
-    const sendFiles = () => {
-        props.sendFiles(files, setFiles([]))
-    }
     
-    let key = 0
     return(
         <div className="alert-files" ref={alertFiles} data-identifier="4">
         {
@@ -89,7 +85,7 @@ export default function AlertFiles (props) {
                 )
             })
         }
-        <button onClick={() => sendFiles(files)} className="send-files">send</button>
+        <button onClick={() => props.sendFiles(files, setFiles([]))} className="send-files">send</button>
         </div>
     )
 }

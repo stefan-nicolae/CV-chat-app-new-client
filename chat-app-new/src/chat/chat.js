@@ -16,36 +16,34 @@ import ImageFileEmbed from "./file-embeds/image-file-embed"
 import * as Network from "../main/network" 
 import { useEffect, useRef, useState } from "react"
 
-const enableDefaultMessages = false
-let defaultMessagesHaveRan = false
 function generateFileEmbed (file, addFullscreen) {
     const getEmbedFileType = dataURI => {
         return(dataURI.slice(dataURI.indexOf(":")+1, dataURI.indexOf(";"))) 
     }
     switch(file.fileType) {
         case "audio":
-            return(<AudioFileEmbed dataURI={file.dataURI} embedFileType={getEmbedFileType(file.dataURI)}/>)      
+            return(<AudioFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} />)      
         case "video":
-            return(<VideoFileEmbed dataURI={file.dataURI} embedFileType={getEmbedFileType(file.dataURI)}/>)
+            return(<VideoFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} />)
         case "image":
-            return(<ImageFileEmbed dataURI={file.dataURI} embedFileType={getEmbedFileType(file.dataURI)} addFullscreen={addFullscreen}/>) 
+            return(<ImageFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} addFullscreen={addFullscreen}/>) 
         default:
             return(<></>)
     }
 }
 
-function loadDefaultMessages(messageArr) {
-    if(defaultMessagesHaveRan || !enableDefaultMessages) return
-    defaultMessagesHaveRan = true
+function loadDefaultMessages(messageArr, defaultMessagesHaveRan, enableDefaultMessages, key) {
+    if(defaultMessagesHaveRan.current || !enableDefaultMessages) return
+    defaultMessagesHaveRan.current = true
     for(let i = 0; i < 100; i++) {
-        const identifier = (Math.random()>=0.5)? "me" : "them"
+        const me = (Math.random()>=0.5)
         const string = "a".repeat(1000)
-        messageArr.push(identifier + string)
+        messageArr.push(<TextMessage message={string} me={me} key={key.current++}/>)
     }
 }
 
 function messageScrolling (event, scroll) {
-    scroll.current = event.target.scrollHeight - event.target.scrollTop - event.target.clientHeight
+    scroll.current = event.scrollHeight - event.scrollTop - event.clientHeight
 }
 
 function scrollDown (chatMain) {
@@ -53,6 +51,11 @@ function scrollDown (chatMain) {
         chatMain.current.scrollTop = chatMain.current.scrollHeight - chatMain.current.clientHeight
 }
 
+function setScroll (scroll, chatMain) {
+    if(chatMain === undefined) return
+    chatMain.current.scrollTop = chatMain.current.scrollHeight - chatMain.current.clientHeight - scroll.current
+}
+ 
 function blobToDataURI (blob, callback) {
     let a = new FileReader();
     a.onload = function (e) {
@@ -78,24 +81,33 @@ function fileArrToFileStructArr (fileArr, callbackFn) {
     }
     f(fileArr, 0)
 }
- 
-let key = 0;
+
 export default function Chat (props) {
-    const messageArr = useRef([])
-    const scroll = useRef([])
-    const newMessage = useRef([false])
-    const chatMain = useRef()
+    const enableDefaultMessages = 1
     const [alertFiles, setAlertFiles] = useState()
     const [state, setState] = useState()
+    const messageArr = useRef([])
+    const scroll = useRef(0)
+    const newMessage = useRef([false])
+    const chatMain = useRef()
+    const scrollToBeReset = useRef(0)
+    const key = useRef(0)
+    const defaultMessagesHaveRan = useRef(false)
+    const lastScrollBeforeMessage = useRef()
 
     if(props.MYID) Network.chatHasOpened()
-
-    loadDefaultMessages(messageArr.current) //will only run once
-
+    loadDefaultMessages(messageArr.current, defaultMessagesHaveRan, enableDefaultMessages, key) //will only run once
+    
+    const resetScroll = (scroll) => {
+        scrollToBeReset.current = scroll
+        setState(Math.random())
+    }
+    
     const sendTextMessage = (message, me) => {
         if(message.startsWith(" ") || message.startsWith("\n") || message === "") return
-        messageArr.current.push(<TextMessage message={message} me={me} key={key++}/>) 
-        newMessage.current = true
+        lastScrollBeforeMessage.current = scroll.current
+        messageArr.current.push(<TextMessage message={message} me={me} key={key.current++}/>) 
+        newMessage.current = 1
 
         //store it 
         //send it over the network
@@ -105,10 +117,13 @@ export default function Chat (props) {
     }
 
     const sendFileMessages = (files, me) => {
+        lastScrollBeforeMessage.current = scroll.current
         //print it
         files.forEach(file => {
-            messageArr.current.push(<MediaMessage scroll={scroll.current} resetScroll={resetScroll} file={file} message={file.message} me={me} key={key++} generateFileEmbed={generateFileEmbed}/>)
+            messageArr.current.push(<MediaMessage scroll={scroll} resetScroll={resetScroll} file={file} message={file.message} me={me} key={key.current++} generateFileEmbed={generateFileEmbed}/>)
         })
+        newMessage.current = 2
+        console.log(scroll.current)
        if(me) props.setNewMSG({
             me: true
         })
@@ -148,20 +163,32 @@ export default function Chat (props) {
                 setAlertFiles(<AlertFiles closeAlertFiles={closeAlertFiles} files={files} handleFileDrop={props.handleFileDrop} seed={seed} sendFiles={sendFiles} generateFileEmbed={generateFileEmbed}/>)
             })
         })
+        
+        if(newMessage.current && lastScrollBeforeMessage.current <= 300) {
+            if(newMessage.current === 1) scrollDown(chatMain)
+            if(newMessage.current === 2) setTimeout(() => {
+                scrollDown(chatMain)
+            }, 50)
+            newMessage.current = 0
+        }
 
-        if(newMessage.current && scroll.current <= 500) {
-            scrollDown(chatMain)
+        if(scrollToBeReset.current !== 0) {
+            setScroll(scrollToBeReset.current)
+            scrollToBeReset.current = 0
         }
     })
+
+
    
     return props.MYID ? (
         <div className="chat">
-            <div className="chat-main" onScroll={event => {messageScrolling(event, scroll)}} onDoubleClick={() => {scrollDown(chatMain)}} ref={chatMain} data-identifier="3">
+            <div className="chat-main" onScroll={event => {messageScrolling(event.target, scroll)}} ref={chatMain} data-identifier="3">
                 {messageArr.current.map(message => {
                     return(message) 
                 })}
             </div>
             {alertFiles}
+            <span id="scroll-down" onClick={() => scrollDown(chatMain)}><iconify-icon icon="ant-design:arrow-down-outlined"></iconify-icon> </span>
             <div className="chat-input">
                 <textarea onKeyDown={enterInput} type="text"></textarea>
             </div>
