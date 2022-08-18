@@ -7,8 +7,8 @@ import "./main.css"
 
 const fileDropHandled = {}
 //if callback is empty it will just stop file drops from doing anything
-export function handleFileDrop (element, callback = () => {}) {
-    if(element === undefined || element.dataset.identifier === undefined || fileDropHandled[element.dataset.identifier] === true) return
+function handleFileDrop (element, callback = () => {}) {
+    if(element === null || element === undefined || element.dataset.identifier === undefined || fileDropHandled[element.dataset.identifier] === true) return
     fileDropHandled[element.dataset.identifier] = true
     element.ondragover = e => {
         e.preventDefault()
@@ -26,6 +26,7 @@ export default function Container () {
     const [nickname, setNickname] = useState(enableStartup ? undefined : "default")
     const [MYID, setMYID] = useState()
     const [newMSG, setNewMSG] = useState()
+    const [INTERLOCUTOR, setINTERLOCUTOR] = useState()
 
     useEffect(() => {
         document.querySelectorAll("*").forEach(component => {
@@ -44,8 +45,8 @@ export default function Container () {
     return nickname ? (
         <div className="container container-main">
             <Network setMYID={setMYID}/>
-            <Aside MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop}/>
-            <Chat MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop}/>
+            <Aside MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
+            <Chat MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
         </div>
     ) : <div className="container"> 
             <Startup setNickname={setNickname} handleFileDrop={handleFileDrop}/>

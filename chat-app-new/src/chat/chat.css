@@ -63,7 +63,7 @@
 
 .normal-file-embed {
     cursor: pointer;
-    color: rgb(0, 175, 166);
+    color: var(--shiny);
     text-decoration: underline;
 }
 
@@ -100,8 +100,7 @@
 .fullscreen p {
     font-size: x-large;
 }
-
-#scroll-down {
+.scroll-down {
     display: block;
     border: 1px solid black;
     height: 30px;
@@ -118,8 +117,27 @@
     margin-left: -15px;
 }
 
-#scroll-down:hover {
+.scroll-down:hover {
     background-color: black;
     color: white;
     border-color: white;
+}
+
+.scroll-down.chat-closed {
+    background-color: var(--darker-gray);
+}
+
+.scroll-down.chat-closed:hover {
+    color: var(--dark-gray);
+    border-color: black;
+}
+
+.chat-input.chat-closed {
+    display: none;
+}
+
+.chat-main.chat-closed {
+    height: 100%;
+    background-color: var(--darker-gray);
+    border-color: black;
 }
