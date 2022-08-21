@@ -36,6 +36,7 @@
     word-wrap: break-word;
     cursor: pointer;
     position: relative;
+    display: flex;
 }
 
 /* .aside .friend:hover {
@@ -78,7 +79,7 @@
 }
 
 .aside .enemy .close-friend {
-    color: rgb(97, 97, 97)
+    color: rgb(97, 97, 97);
 }
 
 .aside .friend-selected.enemy {

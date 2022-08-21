@@ -72,6 +72,7 @@ export default function AlertFiles (props) {
     useEffect(() => {
         props.handleFileDrop(alertFiles.current)
     }, [])
+    
     return (
         <div className="alert-files" ref={alertFiles} data-identifier="4">
         {

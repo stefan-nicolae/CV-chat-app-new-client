@@ -112,6 +112,7 @@ export default function Chat (props) {
     const key = useRef(0)
     const defaultMessagesHaveRan = useRef(false)
     const lastScrollBeforeMessage = useRef()
+    const chatEmpty = useRef()
 
     const lastINTERLOCUTOR = useRef()
     const scrollStore = useRef({})
@@ -219,6 +220,7 @@ export default function Chat (props) {
                 if(!CLOSED) setAlertFiles(<AlertFiles CLOSED={CLOSED} closeAlertFiles={closeAlertFiles} files={files} handleFileDrop={props.handleFileDrop} seed={seed} sendFiles={sendFiles} generateFileEmbed={generateFileEmbed}/>)
             })
         })
+        props.handleFileDrop(chatEmpty.current)
         
         if(newMessage.current && lastScrollBeforeMessage.current <= 500) {
             if(newMessage.current === 1) scrollDown(chatMain)
@@ -246,10 +248,10 @@ export default function Chat (props) {
             {alertFiles}
             <span className={"scroll-down" + (CLOSED ? " chat-closed": "")} onClick={() => scrollDown(chatMain)}><iconify-icon icon="ant-design:arrow-down-outlined"></iconify-icon> </span>
             <div className={"chat-input" + (CLOSED ? " chat-closed" : "")}>
-                <textarea onKeyDown={enterInput} type="text"></textarea>
+                <textarea onKeyDown={(event) => enterInput(event)} type="text"></textarea>
             </div>
         </div>
     ) : (
-        <div className="chat"></div>
+        <div className="chat chat-empty"  ref={chatEmpty} data-identifier="5"></div>
     )
 }

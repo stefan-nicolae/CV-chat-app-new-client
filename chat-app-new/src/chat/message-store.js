@@ -5,7 +5,6 @@ export function storeMessage(message, INTERLOCUTOR) {
 }
 
 export function getMessages(INTERLOCUTOR) {
-    console.log(INTERLOCUTOR)
     if(!messages[INTERLOCUTOR]) return []
     return messages[INTERLOCUTOR]
 }

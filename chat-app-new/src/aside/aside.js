@@ -1,10 +1,10 @@
 import "./aside.css"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Friend from "./friend"
 
 
 export default function Aside (props) {
-    const enableDefaultFriends = true
+    const enableDefaultFriends = 1
     const defaultFriends = enableDefaultFriends ? [
         {id: 1, name: "asdasdasd"}, 
         {id: 2, name: "asdasdasd"}, 
@@ -20,12 +20,40 @@ export default function Aside (props) {
 
     const aside = useRef()
     const key=useRef(0)
-    const friends = useRef(defaultFriends)
+    const friends = useRef(defaultFriends) //array
+    const ID = useRef(-1)
+
+    const addFriend = (nickname, id) => {
+        friends.current.forEach(friend => {
+            friend.is_selected = false
+        })
+        friends.current.push(
+            {
+                id: id, name: nickname, is_selected: true
+            }
+        )
+        ID.current = id
+        props.setINTERLOCUTOR(id)
+    }
 
     useEffect(() => {
         props.handleFileDrop(aside.current)
     })
 
+
+    const handleInput = (event) => {
+        if(event.code === "Enter") {
+            const value = event.currentTarget.value
+            if(!value.includes("#")) return
+            const arr = value.split("#") 
+            const nickname = arr[0]
+            const id = arr[1]
+            if(nickname === "" || id === "") return
+            event.currentTarget.value = ""
+            addFriend(nickname, id)
+        }
+    }
+    
     return props.MYID ? (
         <div className="aside" ref={aside} data-identifier="2">
             <div className="uid">
@@ -39,7 +67,7 @@ export default function Aside (props) {
             }
             <div className="friend add-friend">
                 <span className="plus"><iconify-icon icon="ant-design:plus-circle-twotone"></iconify-icon></span>
-                <input placeholder="nickname_of_your_choice#their_ID"></input>
+                <input onKeyDown={event => handleInput(event)} placeholder="nickname_of_your_choice#their_ID"></input>
             </div>
             </div>
         </div>
