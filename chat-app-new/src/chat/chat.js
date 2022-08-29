@@ -1,11 +1,3 @@
-//message format to send and receive over the network
-// newMSG: {
-//     me: true/false
-//     message: text/object
-//     isText: true/false
-//     requestID: msg+Math.random() 
-// }
-
 import "./chat.css"
 import TextMessage from "./messages/text-message"
 import MediaMessage from "./messages/media-message"
@@ -99,7 +91,7 @@ function dataURISizeInMB (dataURI) {
 
 let globalInterlocutor, CLOSED //sometimes a function can't read the current value, so we use this instead
 export default function Chat (props) {
-    const enableDefaultMessages = 1
+    const enableDefaultMessages = 0
     const fileSizeLimit = 8 //MB
 
     const [alertFiles, setAlertFiles] = useState()
@@ -121,7 +113,6 @@ export default function Chat (props) {
     CLOSED = globalInterlocutor ? (globalInterlocutor.toString().startsWith("closed") ? true : false) : undefined
     globalInterlocutor =  CLOSED ? parseFloat(globalInterlocutor.replace("closed", "")) : globalInterlocutor
     
-
     //ends up calling setScroll after the render
     const resetScroll = (amount) => {
         scrollToBeReset.current = amount
@@ -158,13 +149,20 @@ export default function Chat (props) {
     const sendTextMessage = (message, me) => {
         if(message.startsWith(" ") || message.startsWith("\n") || message === "") return
         lastScrollBeforeMessage.current = scroll.current
-        const messageElement = <TextMessage message={message} me={me} key={key.current++}/>
+        const requestID = Math.random()
+        const messageElement = <TextMessage requestID={requestID}  message={message} me={me} key={key.current++}/>
         messageArr.current.push(messageElement) 
         newMessage.current = 1
         
         //store it 
         MessageStore.storeMessage(messageElement, globalInterlocutor)
         //send it over the network
+        Network.sendRequest({
+            "msgType": "textMessage",
+            "message": message,
+            "peerID": globalInterlocutor,
+            "requestID": requestID
+        })
         if(me) props.setNewMSG({
             me: true
         })
@@ -175,14 +173,21 @@ export default function Chat (props) {
         //print it
         files.forEach(file => {
             if(dataURISizeInMB(file.dataURI) > fileSizeLimit) return 
-            const messageElement = <MediaMessage scroll={scroll} resetScroll={resetScroll} file={file} message={file.message} me={me} key={key.current++} generateFileEmbed={generateFileEmbed}/>
+            const requestID = Math.random()
+            const messageElement = <MediaMessage requestID={requestID} scroll={scroll} resetScroll={resetScroll} file={file} message={file.message} me={me} key={key.current++} generateFileEmbed={generateFileEmbed}/>
             messageArr.current.push(messageElement)
             MessageStore.storeMessage(messageElement, globalInterlocutor)
+
+            Network.sendRequest({
+                "msgType": "fileMessage",
+                "file": file,
+                "peerID": globalInterlocutor,
+                "requestID": requestID
+            })
         })
         newMessage.current = 2
         
         //store it
-        //send it over the network 
        if(me) props.setNewMSG({
             me: true
         })
@@ -252,6 +257,6 @@ export default function Chat (props) {
             </div>
         </div>
     ) : (
-        <div className="chat chat-empty"  ref={chatEmpty} data-identifier="5"></div>
+        <div className="chat chat-empty" ref={chatEmpty} data-identifier="5"></div>
     )
 }

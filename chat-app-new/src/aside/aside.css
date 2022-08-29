@@ -19,7 +19,7 @@
 .aside .friends {
     border: 1px solid var(--accent);
     margin-top: 10px;
-    height: calc(100% - 40px - 20px);
+    height: calc(100% - 40px - 20px - 110px);
     padding: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -133,5 +133,45 @@
     text-align: center;
 }
 
+.aside .aside-prompt {
+    height: 100px;
+    border: 1px solid var(--accent);
+    overflow-y:scroll ;
+    margin-top: 10px;
+    color: white;
+}
 
+.aside .aside-prompt-item {
+    border-bottom: 1px solid gray;
+    word-wrap: break-word;
+}
 
+.aside .add-friend-prompt {
+    padding: 2px;
+}
+
+.aside .add-friend-prompt span {
+    background-color: var(--shiny);
+    margin-right: 2px;
+    color: black;
+    padding: 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.aside .add-friend-prompt span:hover{
+    background-color: black;
+    color: white;
+}
+
+.aside .set-nickname-prompt {
+    display: flex;
+    flex-direction: column;
+}
+
+.aside .set-nickname-prompt input {
+    display: unset;
+    background-color: var(--shiny);
+    color:  black;
+    padding: 2px;
+}

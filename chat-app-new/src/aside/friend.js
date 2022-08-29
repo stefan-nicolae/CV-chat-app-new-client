@@ -4,11 +4,10 @@ export default function Friend (props) {
     if(props.friend.is_selected) className += " friend-selected"
     if(props.friend.is_closed) className += " enemy"
 
-    let friendWasClosed = false
-
     const closeFriend = event => {
         if(props.friend.is_closed === true) return
         props.friend.is_closed = true
+        props.removePeer()
     }
 
     const setINTERLOCUTOR = event => {

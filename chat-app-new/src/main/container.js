@@ -27,6 +27,7 @@ export default function Container () {
     const [MYID, setMYID] = useState()
     const [newMSG, setNewMSG] = useState()
     const [INTERLOCUTOR, setINTERLOCUTOR] = useState()
+    const [requestReceived, setRequestReceived] = useState()
 
     useEffect(() => {
         document.querySelectorAll("*").forEach(component => {
@@ -42,11 +43,15 @@ export default function Container () {
         }
     }, [])
 
+    const receiveRequest = (request) => {
+        setRequestReceived(request)
+    }
+
     return nickname ? (
         <div className="container container-main">
-            <Network setMYID={setMYID}/>
-            <Aside MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
-            <Chat MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
+            <Network receiveRequest={receiveRequest} setMYID={setMYID}/>
+            <Aside requestReceived={requestReceived} MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
+            <Chat requestReceived={requestReceived} MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
         </div>
     ) : <div className="container"> 
             <Startup setNickname={setNickname} handleFileDrop={handleFileDrop}/>
