@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Startup from "./startup"
 import Chat from "../chat/chat"
 import Aside from "../aside/aside"
@@ -22,12 +22,17 @@ function handleFileDrop (element, callback = () => {}) {
 }
 
 export default function Container () {
-    const enableStartup = 0
+    const enableStartup = 1
+
+    const blockList = useRef({})
+
     const [nickname, setNickname] = useState(enableStartup ? undefined : "default")
     const [MYID, setMYID] = useState()
     const [newMSG, setNewMSG] = useState()
     const [INTERLOCUTOR, setINTERLOCUTOR] = useState()
     const [requestReceived, setRequestReceived] = useState()
+    const [asidePromptInformation, addToAsidePrompt] = useState() //prompt on the bottom left
+    const [isItScrolledDown, set_isItScrolledDown] = useState()
 
     useEffect(() => {
         document.querySelectorAll("*").forEach(component => {
@@ -49,9 +54,9 @@ export default function Container () {
 
     return nickname ? (
         <div className="container container-main">
-            <Network receiveRequest={receiveRequest} setMYID={setMYID}/>
-            <Aside requestReceived={requestReceived} MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
-            <Chat requestReceived={requestReceived} MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
+            <Network receiveRequest={receiveRequest} setMYID={setMYID} MYID={MYID}/>
+            <Aside isItScrolledDown={isItScrolledDown} blockList={blockList} addToAsidePrompt={addToAsidePrompt} asidePromptInformation={asidePromptInformation} requestReceived={requestReceived} MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
+            <Chat set_isItScrolledDown={set_isItScrolledDown} blockList={blockList} addToAsidePrompt={addToAsidePrompt} asidePromptInformation={asidePromptInformation} requestReceived={requestReceived} MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
         </div>
     ) : <div className="container"> 
             <Startup setNickname={setNickname} handleFileDrop={handleFileDrop}/>

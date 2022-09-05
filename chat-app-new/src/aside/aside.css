@@ -3,6 +3,8 @@
     max-width: 350px;
     background-color: rgb(49, 49, 49);
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .aside .uid {
@@ -19,10 +21,11 @@
 .aside .friends {
     border: 1px solid var(--accent);
     margin-top: 10px;
-    height: calc(100% - 40px - 20px - 110px);
+    flex: 1;
     padding: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
+    margin-bottom: 10px;
 }
 
 /* .friend */
@@ -32,16 +35,15 @@
     height: 50px;
     padding: 5px;
     color: white;
-    overflow: hidden;
-    word-wrap: break-word;
     cursor: pointer;
     position: relative;
     display: flex;
 }
 
-/* .aside .friend:hover {
-    background-color: rgb(0, 0, 0);
-} */
+.aside .friend p {
+    width: 90%;
+    word-wrap: break-word;
+}
 
 .aside .close-friend {
     cursor: pointer;
@@ -137,13 +139,16 @@
     height: 100px;
     border: 1px solid var(--accent);
     overflow-y:scroll ;
-    margin-top: 10px;
     color: white;
+    margin-bottom: 10px;
 }
 
 .aside .aside-prompt-item {
-    border-bottom: 1px solid gray;
     word-wrap: break-word;
+}
+
+.aside .aside-prompt-item > * {
+    border-bottom: 1px solid gray;
 }
 
 .aside .add-friend-prompt {
@@ -174,4 +179,28 @@
     background-color: var(--shiny);
     color:  black;
     padding: 2px;
+}
+
+.aside .new-message {
+    color: red; 
+    background-color: rgb(255, 255, 255);
+    position: absolute; 
+    padding: 0 4px;
+    right: 0;
+    bottom: 0;
+}
+
+.aside #hide-aside-prompt {
+    position: absolute;
+    left: 300px;
+    bottom: 0px;
+    font-size: 25px;
+    background-color: unset;
+    border: unset;
+    color: white;
+    cursor: pointer;
+}
+
+.aside #hide-aside-prompt:hover {
+    color: var(--accent)
 }

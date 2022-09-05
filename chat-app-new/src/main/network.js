@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-
+console.log("network starting")
 const ADDRESS = "ws://localhost:8082"
 const socket = new WebSocket(ADDRESS)
 let MYID
@@ -23,24 +23,27 @@ socket.addEventListener("open", () => {
 
 
 //this is to check if your message has been received by the other peer
-export async function waitForRequestID(requestID) {
+export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{}) {
     //if it doesn't come within 10 seconds, return false, else return true :)
+    // console.log('waiting for ' + requestID)
+    let requestWasReceived = false
+    const interval2 = setInterval(() => {
+        if(receivedRequestID === requestID) {
+            clearInterval(interval2)
+            requestWasReceived = true
+            callback()
+        }
+    }, 10)
     setTimeout(() => {
-        const interval = setInterval(() => {
-            if(receivedRequestID === requestID) {
-                clearInterval(interval)
-                return true
-            }
-        }, 10)
+        clearInterval(interval2)
+        if(!requestWasReceived) errorCallback()
     }, 10000)
-    clearInterval(interval)
-    return false
 }
 
 export default function Network (props) {
     useEffect(() => {
         interval = setInterval(() => {
-            if(props.setMYID !== undefined) {
+            if(MYID !== undefined) {
                 props.setMYID(MYID)
             }
         }, 10)
@@ -51,11 +54,15 @@ export default function Network (props) {
             switch(msg.msgType) {
                 case "yourID":
                     MYID = msg.ID
+                    sendRequest({
+                        "msgType": "MYID_RECEIVED",
+                        "senderID": MYID
+                    })
                     break    
                 case "requestSucceeded": 
                     receivedRequestID = msg.requestID
                     break
-                case "addPeer": 
+                default: 
                     props.receiveRequest(msg)
                     break
             }

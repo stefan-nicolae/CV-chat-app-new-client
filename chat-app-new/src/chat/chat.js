@@ -93,6 +93,7 @@ let globalInterlocutor, CLOSED //sometimes a function can't read the current val
 export default function Chat (props) {
     const enableDefaultMessages = 0
     const fileSizeLimit = 8 //MB
+    const scrollDelta = 500
 
     const [alertFiles, setAlertFiles] = useState()
     const [state, setState] = useState()
@@ -105,9 +106,12 @@ export default function Chat (props) {
     const defaultMessagesHaveRan = useRef(false)
     const lastScrollBeforeMessage = useRef()
     const chatEmpty = useRef()
+    const lastRequestReceived = useRef()
 
     const lastINTERLOCUTOR = useRef()
     const scrollStore = useRef({})
+
+    // const scrollDownPositive= useRef({})
 
     globalInterlocutor = props.INTERLOCUTOR
     CLOSED = globalInterlocutor ? (globalInterlocutor.toString().startsWith("closed") ? true : false) : undefined
@@ -117,6 +121,21 @@ export default function Chat (props) {
     const resetScroll = (amount) => {
         scrollToBeReset.current = amount
         setState(Math.random())
+    }
+    
+    const isItScrolledDown = () => {
+        if(scroll.current <= scrollDelta) {
+            //it is scrolled down
+            setTimeout(() => {
+                props.set_isItScrolledDown("true " + globalInterlocutor)
+            }, 100)
+        }
+        else {
+            //it's not
+            setTimeout(() => {
+                props.set_isItScrolledDown("false " + globalInterlocutor)
+            }, 100)
+        }
     }
 
     //on INTERLOCUTOR change
@@ -128,87 +147,125 @@ export default function Chat (props) {
 
         //load messages
         messageArr.current = []
+        key.current = 0
         defaultMessagesHaveRan.current = false
         loadDefaultMessages(messageArr.current, defaultMessagesHaveRan, enableDefaultMessages, key) //will only run once
         MessageStore.getMessages(globalInterlocutor).forEach(message => {
-            messageArr.current.push(message)
+            if(typeof(message.message) === "object") {
+                const messageElement = <MediaMessage scroll={scroll} resetScroll={resetScroll} message={message.message} file={message.message} me={message.me} key={key.current++} generateFileEmbed={generateFileEmbed} isClosed={message.isClosed}/>
+                messageArr.current.push(messageElement) 
+
+            } else {
+                const messageElement = <TextMessage message={message.message} me={message.me} key={key.current++} isClosed={message.isClosed}/> 
+                messageArr.current.push(messageElement) 
+            }
         })
 
         //clear any alert files
         setAlertFiles(<></>)
+
+        isItScrolledDown()
     }
-    //
 
     if(props.MYID) Network.chatHasOpened()
-    
+
     const messageScrolling = (target) => {
+        scrollToBeReset.current = -1
         scroll.current = target.scrollHeight - target.scrollTop - target.clientHeight
         scrollStore.current[globalInterlocutor] = scroll.current
+        isItScrolledDown()
     }   
 
-    const sendTextMessage = (message, me) => {
-        if(message.startsWith(" ") || message.startsWith("\n") || message === "") return
-        lastScrollBeforeMessage.current = scroll.current
-        const requestID = Math.random()
-        const messageElement = <TextMessage requestID={requestID}  message={message} me={me} key={key.current++}/>
-        messageArr.current.push(messageElement) 
-        newMessage.current = 1
-        
-        //store it 
-        MessageStore.storeMessage(messageElement, globalInterlocutor)
-        //send it over the network
-        Network.sendRequest({
-            "msgType": "textMessage",
-            "message": message,
-            "peerID": globalInterlocutor,
-            "requestID": requestID
-        })
-        if(me) props.setNewMSG({
-            me: true
-        })
-    }
+    const sendMessage = (message, me, isText=true, request, senderID) => {
+        if(!me) {
+            if(props.blockList[senderID]) {
+                Network.sendRequest({
+                    "msgType": "BLOCKED",
+                    "peerID": senderID,
+                    "senderID": props.MYID 
+                })
+                return
+            }
 
-    const sendFileMessages = (files, me) => {
-        lastScrollBeforeMessage.current = scroll.current
-        //print it
-        files.forEach(file => {
-            if(dataURISizeInMB(file.dataURI) > fileSizeLimit) return 
-            const requestID = Math.random()
-            const messageElement = <MediaMessage requestID={requestID} scroll={scroll} resetScroll={resetScroll} file={file} message={file.message} me={me} key={key.current++} generateFileEmbed={generateFileEmbed}/>
-            messageArr.current.push(messageElement)
-            MessageStore.storeMessage(messageElement, globalInterlocutor)
-
+            
             Network.sendRequest({
-                "msgType": "fileMessage",
-                "file": file,
-                "peerID": globalInterlocutor,
-                "requestID": requestID
+                "msgType": "requestSucceeded",
+                "peerID": senderID,
+                "requestID": request.requestID
             })
-        })
-        newMessage.current = 2
+        }
         
-        //store it
-       if(me) props.setNewMSG({
-            me: true
-        })
+        if(me || senderID === globalInterlocutor) {
+            lastScrollBeforeMessage.current = scroll.current 
+            newMessage.current = isText ? 1 : 2
+            
+            const messageElement = isText ? 
+            <TextMessage message={message} me={me} key={key.current++}/> : 
+            <MediaMessage scroll={scroll} resetScroll={resetScroll} file={message} me={me} key={key.current++} generateFileEmbed={generateFileEmbed}/>//
+            messageArr.current.push(messageElement) 
+        }
+
+        if(!isText && dataURISizeInMB(message.dataURI) > fileSizeLimit) return 
+
+
+        const requestID = Math.random()
+        //store it 
+        MessageStore.storeMessage({message: message, requestID: requestID, me: me, isClosed: false}, me ? globalInterlocutor : senderID)
+        
+        if(me) {
+            //send it over the network
+            Network.sendRequest({
+                "msgType": isText ? "textMessage" : "fileMessage",
+                "message": message,
+                "peerID": globalInterlocutor,
+                "requestID": requestID,
+                "senderID": props.MYID
+            })
+            const INTERLOCUTOR = globalInterlocutor
+            Network.waitForRequestID(requestID, () => {
+            }, () => {
+                MessageStore.getMessageByRequestID(requestID, INTERLOCUTOR).isClosed = true
+                lastINTERLOCUTOR.current = Math.random()
+                console.log(MessageStore.getMessageByRequestID(requestID, INTERLOCUTOR))
+                props.addToAsidePrompt(<p className={Math.random()}>Message not sent in chat id {INTERLOCUTOR}</p>)
+            })
+        }
+        setTimeout(()=>{
+            props.setNewMSG(Math.random()) //just updates everything
+        }, 50)
     }
 
-    if(props.newMSG !== undefined && props.newMSG.me === false) {
-        if(props.newMSG.isText) sendTextMessage(props.newMSG.message, false)
-        else sendFileMessages([props.newMSG.message], false)
+    const sendTextMessage = (message, me) => {
+        sendMessage(message, me)
+    }
+
+    if(props.requestReceived !== lastRequestReceived.current) {
+        lastRequestReceived.current = props.requestReceived 
+        const request = props.requestReceived
+        switch(request.msgType) { 
+            case "fileMessage":
+                sendMessage(request.message, false, false, request, request.senderID)
+                break
+            case "textMessage":
+                sendMessage(request.message, false, true, request, request.senderID)
+                break
+        }   
     }
 
     //calls sendFileMessages()
     const sendFiles = (files, clearAlert = () => {}) => {
         setAlertFiles(<></>)
         clearAlert()
-        sendFileMessages(files, true)
+        files.forEach(file => {
+            sendMessage(file, true, false)
+        })
     }
 
     const enterInput = event => {
         if(event.key === "Enter" && !event.shiftKey) {
             event.preventDefault()
             const message = event.currentTarget.value 
+            if(message.startsWith(" ") || message.startsWith("\n") || message == "" || message == undefined) return 
             event.currentTarget.value = ""
             sendTextMessage(message, true)
         }
@@ -221,13 +278,21 @@ export default function Chat (props) {
     useEffect(() => {
         props.handleFileDrop(chatMain.current, e => {
             fileArrToFileStructArr(e.dataTransfer.files, files => {
+                
+                files.forEach((file) => {
+                    if(dataURISizeInMB(file.dataURI) > fileSizeLimit) {
+                        files = []
+                        return
+                    }
+                })
+                if(files.length === 0) return
                 const seed = Math.random() //so AlertFiles knows when new files are dropped by comparing this seed with the last seed
                 if(!CLOSED) setAlertFiles(<AlertFiles CLOSED={CLOSED} closeAlertFiles={closeAlertFiles} files={files} handleFileDrop={props.handleFileDrop} seed={seed} sendFiles={sendFiles} generateFileEmbed={generateFileEmbed}/>)
             })
         })
         props.handleFileDrop(chatEmpty.current)
         
-        if(newMessage.current && lastScrollBeforeMessage.current <= 500) {
+        if(newMessage.current && lastScrollBeforeMessage.current <= scrollDelta) {
             if(newMessage.current === 1) scrollDown(chatMain)
             if(newMessage.current === 2) setTimeout(() => {
                 scrollDown(chatMain)

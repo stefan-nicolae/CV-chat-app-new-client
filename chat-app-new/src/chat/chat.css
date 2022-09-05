@@ -24,8 +24,14 @@
     white-space: pre-line;
 }
 
+.message.me {
+    background-color: rgb(54, 54, 54);
+}
+
 .message.them {
     align-self: flex-end;
+    width: 100%;
+    background-color: rgb(84, 84, 84);
 }
 
 /* chat input */
@@ -132,6 +138,14 @@
     border-color: black;
 }
 
+.scroll-down {
+    z-index: 1;
+}
+
+.fullscreen {
+    z-index: 2;
+}
+
 .chat-input.chat-closed {
     display: none;
 }
@@ -140,4 +154,8 @@
     height: 100%;
     background-color: var(--darker-gray);
     border-color: black;
+}
+
+.msgClosed {
+    border: 1px solid red;
 }
