@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 console.log("network starting")
-const ADDRESS = "ws://localhost:8082"
+
+const PRODUCTION = true
+const ADDRESS = PRODUCTION ? "wss://vladolteanu.com/stfn/chat-app" : "ws://localhost:8082"
 const socket = new WebSocket(ADDRESS)
 let MYID
 let interval 
