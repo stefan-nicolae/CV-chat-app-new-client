@@ -16,18 +16,21 @@
 
     padding: 10px;
     padding-top: 20px;
+    border-radius: 8px;
+
 }
 
 .alert-files .file {
-    color: white;
+    color: var(--shiny);
     width: 100px;
     height: 100px;
     margin-bottom: 10px;
     word-break: break-all;
     position: relative;
-    border: 1px solid white;
-    overflow-y: scroll;
+    border: 1px solid var(--accent);
+    /* overflow-y: scroll */
     scrollbar-width: thin;
+    border-radius: 8px;
 }
 
 .alert-files .close-file {
@@ -62,7 +65,8 @@
     color: var(--accent);
     padding: 5px;
     cursor: pointer;
-    background-color: black;
+    background-color: var(--dark-gray);
+    color: var(--shiny)
 }
 
 .alert-files .send-files:hover {

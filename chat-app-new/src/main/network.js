@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 console.log("network starting")
 
-const PRODUCTION = true
+const PRODUCTION = 0
 const ADDRESS = PRODUCTION ? "wss://vladolteanu.com/stfn/chat-app" : "ws://localhost:8082"
 const socket = new WebSocket(ADDRESS)
 let MYID
