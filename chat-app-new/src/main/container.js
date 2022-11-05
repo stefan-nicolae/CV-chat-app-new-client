@@ -22,7 +22,7 @@ function handleFileDrop (element, callback = () => {}) {
 }
 
 export default function Container () {
-    const enableStartup = 0
+    const enableStartup = 1
 
     const blockList = useRef({})
 
