@@ -111,6 +111,7 @@
 .fullscreen .image-file-embed {
     max-width: unset;
     width: 80%;
+    max-height: unset;
 }
 .fullscreen p {
     font-size: x-large;
