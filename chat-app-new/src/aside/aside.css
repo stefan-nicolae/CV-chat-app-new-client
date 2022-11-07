@@ -65,10 +65,11 @@
     background-color: var(--accent);
     color: var(--shiny);
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 1px;
+    right: 1px;
     display: none;
     padding: 3px;
+    border-radius: 5px;
 }
 
 .aside .friend:hover .friend-id {
@@ -169,15 +170,17 @@
 
 .aside .add-friend-prompt {
     padding: 2px;
+    padding-bottom: 3px;
 }
 
 .aside .add-friend-prompt span {
     background-color: var(--shiny);
-    margin-right: 2px;
+    /* margin-right: 2px; */
     color: black;
     padding: 1px;
     border-radius: 5px;
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .aside .add-friend-prompt span:hover{
