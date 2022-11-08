@@ -27,8 +27,8 @@ socket.addEventListener("open", () => {
 
 //this is to check if your message has been received by the other peer
 export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{}) {
-    //if it doesn't come within 10 seconds, return false, else return true :)
-    // console.log('waiting for ' + requestID)
+    //if it doesn't come within 15 seconds, return false, else return true :)
+    console.log('waiting for ' + requestID)
     let requestWasReceived = false
     const interval2 = setInterval(() => {
         if(receivedRequestID === requestID) {
@@ -40,7 +40,7 @@ export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{
     setTimeout(() => {
         clearInterval(interval2)
         if(!requestWasReceived) errorCallback()
-    }, 10000)
+    }, 15000)
 }
 
 export default function Network (props) {

@@ -137,13 +137,14 @@
     color: var(--shiny);
 }
 .scroll-down.chat-closed {
-    background-color: var(--darker-gray);
-}
+    margin-top: -114px;
 
+}
+/* 
 .scroll-down.chat-closed:hover {
     color: var(--dark-gray);
     border-color: black;
-}
+} */
 
 .scroll-down {
     z-index: 1;

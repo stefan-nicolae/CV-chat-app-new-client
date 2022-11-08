@@ -84,7 +84,34 @@ export default function Aside (props) {
         updatePromptArr(promptInformation)
     }
 
+    //addpeer send
+    const addPeer= (id, nickname) => {
+        if(id == props.MYID) return
+        friends.current.forEach(friend => {
+            if(friend[id] == id) return
+        })
+        props.blockList.current[id] = false
+        
+        Network.sendRequest({
+            "msgType": "addPeer",
+            "peerID": id,
+            "senderID": props.MYID
+        })
+        
+        friendsRequestsSent.current[id] = nickname
+    }
 
+    const removePeer = (id) => {
+        if(props.blockList.current[id] === true) return
+        props.blockList.current[id] = true
+        Network.sendRequest({
+            "msgType": "removePeer",
+            "peerID": id,
+            "senderID": props.MYID
+        })
+    }
+
+    
     const addFriendGUI =(id, nickname=undefined, CALLBACKINDEX=undefined) => {
         //the one who has the callback index does not have the nickname
         const addThem = () => {
@@ -96,6 +123,20 @@ export default function Aside (props) {
                     id: id, name: nickname, is_selected: true
                 }
             )
+            //here
+            const waitForIt = () => {
+                Network.waitForRequestID(id + "still_there", () => waitForIt, () => {
+                    getRemoved(id, true)
+                })
+            }
+            waitForIt()
+            setInterval(()=>{
+                Network.sendRequest({
+                    "msgType": "requestSucceeded",
+                    "peerID": id,
+                    "requestID": props.MYID + "still_there"
+                })
+            }, 10000)
             setTimeout(()=>{
                 props.setINTERLOCUTOR(id) 
             },100)
@@ -134,32 +175,6 @@ export default function Aside (props) {
         }
     }
     
-    //addpeer send
-    const addPeer= (id, nickname) => {
-        if(id == props.MYID) return
-        friends.current.forEach(friend => {
-            if(friend[id] == id) return
-        })
-        props.blockList.current[id] = false
-        
-        Network.sendRequest({
-            "msgType": "addPeer",
-            "peerID": id,
-            "senderID": props.MYID
-        })
-        
-        friendsRequestsSent.current[id] = nickname
-    }
-
-    const removePeer = (id) => {
-        if(props.blockList.current[id] === true) return
-        props.blockList.current[id] = true
-        Network.sendRequest({
-            "msgType": "removePeer",
-            "peerID": id,
-            "senderID": props.MYID
-        })
-    }
     
     const getAdded = (request) => {
         if(request.requestID && friendsRequestsSent.current[request.senderID]) {
@@ -245,13 +260,13 @@ export default function Aside (props) {
                 getAdded(props.requestReceived)
                 break
             case "removePeer":
-                getRemoved(props.requestReceived.senderID)
+                getRemoved(props.requestReceived.senderID, true)
                 break
             case "disconnect":
                 receiveDisconnect(props.requestReceived.ID)
                 break
             case "BLOCKED":
-                getRemoved(props.requestReceived.senderID)
+                getRemoved(props.requestReceived.senderID, true)
                 break
             case "textMessage":
                 newMessageAlert(props.requestReceived.senderID)
