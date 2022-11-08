@@ -91,7 +91,7 @@ function dataURISizeInMB (dataURI) {
 
 let globalInterlocutor, CLOSED //sometimes a function can't read the current value, so we use this instead
 export default function Chat (props) {
-    const enableDefaultMessages = 0
+    const enableDefaultMessages = (window.location.pathname === "/defaults")
     const fileSizeLimit = 8 //MB
     const scrollDelta = 500
 

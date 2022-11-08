@@ -23,8 +23,8 @@ function removePrompt(target, promptArr, setPromptArr){
 }
 
 export default function Aside (props) {
-    const enableDefaultFriends = 0
-    const enableDefaultPromptArr = 0
+    const enableDefaultFriends = (window.location.pathname === "/defaults")
+    const enableDefaultPromptArr = (window.location.pathname === "/defaults")
 
     const defaultFriends = enableDefaultFriends ? [
         {id: 1, name: "asdasdasd"}, 
@@ -68,12 +68,12 @@ export default function Aside (props) {
     const [promptArr, setPromptArr] = useState(defaultPromptArr)
     const [messageAlert, setMessageAlert] = useState()
     const [promptVisibility, setPromptVisibility] = useState(true)
-
     const promptInformation = props.asidePromptInformation
     const updatePromptArr = item => {
         const newPromptArr = []
         if(promptArr.length) newPromptArr.push(promptArr)
         newPromptArr.push(item)
+        document.querySelector("#hide-aside-prompt").classList.add("selected")
         setPromptArr(
             newPromptArr
         )
@@ -277,6 +277,7 @@ export default function Aside (props) {
     }
 
     const togglePromptVisibility = () => {
+        document.querySelector("#hide-aside-prompt").classList.remove("selected")
         if(promptVisibility) setPromptVisibility(false)
         else setPromptVisibility(true)
     }
@@ -300,7 +301,9 @@ export default function Aside (props) {
             </div>
             </div>
             <button onClick={() => {togglePromptVisibility()}}id="hide-aside-prompt"><iconify-icon icon="bi:arrow-bar-up"></iconify-icon></button>
-            <div ref={asidePrompt} style={{display: promptVisibility ? "unset" : "none"}}className="aside-prompt">
+            <div onClick={() => {
+                        document.querySelector("#hide-aside-prompt").classList.remove("selected")
+            }} ref={asidePrompt} style={{display: promptVisibility ? "unset" : "none"}}className="aside-prompt">
                 {
                     promptArr.map(item => {
                         return(<div key={promptItemKey++} className="aside-prompt-item">{item}</div>)

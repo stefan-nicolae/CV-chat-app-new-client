@@ -221,6 +221,10 @@
 
 }
 
+.aside #hide-aside-prompt.selected {
+    color: red !important;
+}
+
 .aside #hide-aside-prompt:hover {
     color: var(--shiny);
 }

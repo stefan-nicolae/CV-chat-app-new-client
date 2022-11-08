@@ -22,7 +22,7 @@ function handleFileDrop (element, callback = () => {}) {
 }
 
 export default function Container () {
-    const enableStartup = 1
+    const enableStartup = (window.location.pathname !== "/defaults")
 
     const blockList = useRef({})
 
