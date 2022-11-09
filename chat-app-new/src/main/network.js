@@ -35,6 +35,7 @@ export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{
             clearInterval(interval2)
             requestWasReceived = true
             callback()
+            receivedRequestID = undefined
         }
     }, 10)
     setTimeout(() => {
