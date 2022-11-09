@@ -128,7 +128,7 @@ export default function Aside (props) {
             )
             //here
             const waitForIt = () => {
-                Network.waitForRequestID(id + "still_there", waitForIt, () => {
+                Network.waitForRequestID(id + "still_there", () => { waitForIt() }, () => {
                     getRemoved(id)
                 })
             }
