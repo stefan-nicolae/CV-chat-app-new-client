@@ -1,0 +1,69 @@
+x all the server is responsible for is to transfer messages to each other. 
+x fix the prompt 
+x send messages back and forth so you know if they dc'd
+x hide button for aside prompt
+x add length limits on:
+	x setting your nickname
+	x setting their nickname
+x a stinky bug when files are not sent 
+x removed you appears when they disconnect
+x file doesn't turn red if not sent. 
+x prompt display flex fix
+x scroll problem
+
+>addPeer:
+
+	x send
+		x check if you already have them added 
+		x make sure you can't add yourself or someone youve already added
+		x if they're on your block list, this will remove them
+		x send request with their peerID
+		x add them in add list so when you get the "addPeer" message back, you won't get the accept/decline ASIDE prompt. Instead, add them to your friends list
+		x the add list (friendRequestsSent) will actually contain the nickname
+
+	x receive
+		x if you get one with a requestID, INSTEAD check your add list (return if false), send a requestSucceeded and add them to your friends list using the nickname in add list  
+
+		x check if they're on your block ist (return if true)
+		x get accept/decline ASIDE prompt
+		x if accept, send addPeer to them, this time with a requestID (which will prompt them to send a requestSucceeded that will add you on their side)
+		x if you decline, add them on the block list
+		x upon confirmation of the requestSucceeded, add them to your friends list. Prompt for a nickname. Delete the accept/decline.
+
+
+>removePeer:
+
+	xsend
+		x add them on your block list (if they are already, return) so they can't add you back.
+		x send request with their peerID
+	xreceive
+		x they turn black on your list 
+
+>text/fileMessage:
+
+	x send
+		x give each message a requestID
+		x send request with the message, their peerID, and your requestID. 
+		x if you don't get a confirmation, make the messages in a red color and write "x messages not sent" in the ASIDE prompt
+	x receive
+		x check your block list (return and send BLOCKED if true).
+		x send a requestSucceeded
+		x new message alert
+			x the messageAlert, setMessageAlert should be a state in aside, containing an object {id: <ID>}. Each time the state changes, increment the respective counter.
+			x when a chat is scrolled down, call the chatScrolledDown/setChatScrolledDown state in container, again containing {id: <ID>} object. On state chance, alert  should clean the respective counter. 
+
+>requestSucceeded:
+	
+	x send
+		x send request with their peerID and the requestID in question
+
+>BLOCKED
+	xsend
+	xreceive
+		x you get disconnected
+
+NEW:
+
+x ping solution
+- stop pinging when person is no more
+- add by url solution

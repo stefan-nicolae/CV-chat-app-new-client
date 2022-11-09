@@ -22,7 +22,7 @@ function handleFileDrop (element, callback = () => {}) {
 }
 
 export default function Container () {
-    const enableStartup = (window.location.pathname !== "/defaults")
+    const enableStartup = (!window.location.pathname.includes("defaults")) && (!window.location.pathname.includes("nologin"))
 
     const blockList = useRef({})
 
@@ -56,7 +56,7 @@ export default function Container () {
         <div className="container container-main">
             <Network receiveRequest={receiveRequest} setMYID={setMYID} MYID={MYID}/>
             <Aside isItScrolledDown={isItScrolledDown} blockList={blockList} addToAsidePrompt={addToAsidePrompt} asidePromptInformation={asidePromptInformation} requestReceived={requestReceived} MYID={MYID} nickname={nickname} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
-            <Chat set_isItScrolledDown={set_isItScrolledDown} blockList={blockList} addToAsidePrompt={addToAsidePrompt} asidePromptInformation={asidePromptInformation} requestReceived={requestReceived} MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
+            <Chat nickname={nickname} set_isItScrolledDown={set_isItScrolledDown} blockList={blockList} addToAsidePrompt={addToAsidePrompt} asidePromptInformation={asidePromptInformation} requestReceived={requestReceived} MYID={MYID} newMSG={newMSG} setNewMSG={setNewMSG} handleFileDrop={handleFileDrop} setINTERLOCUTOR={setINTERLOCUTOR} INTERLOCUTOR={INTERLOCUTOR}/>
         </div>
     ) : <div className="container"> 
             <Startup setNickname={setNickname} handleFileDrop={handleFileDrop}/>

@@ -23,8 +23,8 @@ function removePrompt(target, promptArr, setPromptArr){
 }
 
 export default function Aside (props) {
-    const enableDefaultFriends = (window.location.pathname === "/defaults")
-    const enableDefaultPromptArr = (window.location.pathname === "/defaults")
+    const enableDefaultFriends =    (window.location.pathname.includes("defaults"))
+    const enableDefaultPromptArr =  (window.location.pathname.includes("defaults"))
 
     const defaultFriends = enableDefaultFriends ? [
         {id: 1, name: "asdasdasd"}, 
@@ -111,6 +111,7 @@ export default function Aside (props) {
         })
     }
 
+
     
     const addFriendGUI =(id, nickname=undefined, CALLBACKINDEX=undefined) => {
         //the one who has the callback index does not have the nickname
@@ -126,7 +127,7 @@ export default function Aside (props) {
             //here
             const waitForIt = () => {
                 Network.waitForRequestID(id + "still_there", () => waitForIt, () => {
-                    getRemoved(id, true)
+                    getRemoved(id)
                 })
             }
             waitForIt()
@@ -243,6 +244,15 @@ export default function Aside (props) {
         })
     }
 
+    const forceAdd = (id, nickname) => {
+        Network.sendRequest({
+            "msgType": "requestSucceeded",
+            "peerID": id,
+            "requestID": props.MYID + "fine_to_add"
+         })
+        addFriendGUI(id, nickname)
+    }
+
     useEffect(() => {
         props.handleFileDrop(aside.current)
         scrollDown(asidePrompt)
@@ -260,13 +270,13 @@ export default function Aside (props) {
                 getAdded(props.requestReceived)
                 break
             case "removePeer":
-                getRemoved(props.requestReceived.senderID, true)
+                getRemoved(props.requestReceived.senderID)
                 break
             case "disconnect":
                 receiveDisconnect(props.requestReceived.ID)
                 break
             case "BLOCKED":
-                getRemoved(props.requestReceived.senderID, true)
+                getRemoved(props.requestReceived.senderID)
                 break
             case "textMessage":
                 newMessageAlert(props.requestReceived.senderID)
@@ -274,6 +284,8 @@ export default function Aside (props) {
             case "fileMessage":
                 newMessageAlert(props.requestReceived.senderID)
                 break
+            case "forceAdd":
+                forceAdd(props.requestReceived.senderID, props.requestReceived.nickname)
         }   
     }
 

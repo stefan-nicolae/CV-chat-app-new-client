@@ -89,9 +89,10 @@ function dataURISizeInMB (dataURI) {
     return decoded.length/1024/1024
 }
 
-let globalInterlocutor, CLOSED //sometimes a function can't read the current value, so we use this instead
+let globalInterlocutor, CLOSED, ID //sometimes a function can't read the current value, so we use this instead
+
 export default function Chat (props) {
-    const enableDefaultMessages = (window.location.pathname === "/defaults")
+    const enableDefaultMessages = (window.location.pathname.includes("defaults"))
     const fileSizeLimit = 8 //MB
     const scrollDelta = 500
 
@@ -116,7 +117,8 @@ export default function Chat (props) {
     globalInterlocutor = props.INTERLOCUTOR
     CLOSED = globalInterlocutor ? (globalInterlocutor.toString().startsWith("closed") ? true : false) : undefined
     globalInterlocutor =  CLOSED ? parseFloat(globalInterlocutor.replace("closed", "")) : globalInterlocutor
-    
+
+    ID = props.MYID
     //ends up calling setScroll after the render
     const resetScroll = (amount) => {
         scrollToBeReset.current = amount
@@ -307,7 +309,38 @@ export default function Chat (props) {
             scrollDown(chatMain)
         }
     })
-   
+
+    const sendForceAddMessage = (ID) => {
+        const pathname = window.location.pathname
+        const index = pathname.indexOf("chatID=[")
+        if(index !== -1) {
+            const startIndex = pathname.indexOf("[", index)
+            const endIndex = pathname.indexOf("]", startIndex)
+            if(endIndex !== -1) {
+                const value = pathname.slice(startIndex+1, endIndex)
+                console.log(value)
+                Network.sendRequest({
+                    "msgType": "forceAdd",
+                    "senderID": ID,
+                    "chatID": value,
+                    "nickname": props.nickname
+                })
+            }
+        }
+    }
+    
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log(ID)
+            if(ID) {
+                sendForceAddMessage(ID)
+                clearInterval(interval)
+            }
+        },1000)
+    },[])
+
+
     return (props.MYID && globalInterlocutor !== undefined) ? (
         <div className="chat">
             <div className={"chat-main" + (CLOSED ? " chat-closed" : "")} onScroll={event => {messageScrolling(event.target)}} ref={chatMain} data-identifier="3">
