@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 console.log("network starting")
 
-const PRODUCTION = 0
+const PRODUCTION = 1
 const SERVER_URL = "cv-chat-app-server.onrender.com"
 const ADDRESS = PRODUCTION ? `wss://${SERVER_URL}` : "ws://localhost:8082"
 const socket = new WebSocket(ADDRESS)
