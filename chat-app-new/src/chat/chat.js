@@ -28,11 +28,17 @@ function generateFileEmbed (file, addFullscreen) {
 function loadDefaultMessages(messageArr, defaultMessagesHaveRan, enableDefaultMessages, key) {
     if(defaultMessagesHaveRan.current || !enableDefaultMessages) return
     defaultMessagesHaveRan.current = true
+
+    // if(window.location.pathname.includes("dummyMessages")) {
+        
+    //     return
+    // }
     for(let i = 0; i < 100; i++) {
         const me = (Math.random()>=0.5)
         const string = "a".repeat(1000)
         messageArr.push(<TextMessage message={string} me={me} key={key.current++}/>)
     }
+
 }
 
 function scrollDown (chatMain) {

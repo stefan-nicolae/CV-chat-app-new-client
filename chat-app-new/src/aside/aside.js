@@ -91,7 +91,7 @@ export default function Aside (props) {
         friends.current.forEach(friend => {
             if(friend.id == id) { pass=false; return }
         })
-        if(!pass) return
+        if(!pass && !props.blockList.current[id]) return
         props.blockList.current[id] = false
         
         Network.sendRequest({
@@ -180,11 +180,11 @@ export default function Aside (props) {
     
     
     const getAdded = (request) => {
-        let pass = true
-        friends.current.forEach(friend => {
-            if(friend.id == request.senderID) { pass=false; return }
-        })
-        if(!pass) return
+        // let pass = true
+        // friends.current.forEach(friend => {
+        //     if(friend.id == request.senderID) { pass=false; return }
+        // })
+        // if(!pass) return
         if(request.requestID && friendsRequestsSent.current[request.senderID]) {
             Network.sendRequest({
                 "msgType": "requestSucceeded",
