@@ -28,7 +28,7 @@ socket.addEventListener("open", () => {
 //this is to check if your message has been received by the other peer
 export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{}) {
     //if it doesn't come within 15 seconds, return false, else return true :)
-    // console.log('waiting for ' + requestID)
+    console.log('waiting for ' + requestID)
     let requestWasReceived = false
     const interval2 = setInterval(() => {
         if(receivedRequestID === requestID) {
