@@ -12,11 +12,22 @@ function handleFileDrop (element, callback = () => {}) {
     fileDropHandled[element.dataset.identifier] = true
     element.ondragover = e => {
         e.preventDefault()
+        if(element.className === "chat-main") {
+            element.style.borderColor = "rgb(174, 181, 194)";
+        }
     }
-    
+    element.ondragleave = e => {
+        e.preventDefault()
+        if(element.className === "chat-main") {
+            element.style.borderColor = document.documentElement.style.getPropertyValue("--accent")
+        }
+    }
     element.ondrop = e => {
         e.preventDefault()
         e.stopPropagation()
+        if(element.className === "chat-main") {
+            element.style.borderColor = document.documentElement.style.getPropertyValue("--accent")
+        }
         callback(e)
     }
 }
