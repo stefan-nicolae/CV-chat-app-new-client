@@ -129,7 +129,7 @@ export default function Aside (props) {
             //here
             const waitForIt = () => {
                 Network.waitForRequestID(id + "still_there", () => { waitForIt() }, () => {
-                    getRemoved(id)
+                    getRemoved(id, true)
                 })
             }
             waitForIt()
@@ -277,13 +277,13 @@ export default function Aside (props) {
                 getAdded(props.requestReceived)
                 break
             case "removePeer":
-                getRemoved(props.requestReceived.senderID)
+                getRemoved(props.requestReceived.senderID, true)
                 break
             case "disconnect":
                 receiveDisconnect(props.requestReceived.ID)
                 break
             case "BLOCKED":
-                getRemoved(props.requestReceived.senderID)
+                getRemoved(props.requestReceived.senderID, true)
                 break
             case "textMessage":
                 newMessageAlert(props.requestReceived.senderID)
