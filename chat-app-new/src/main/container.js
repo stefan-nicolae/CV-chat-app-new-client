@@ -4,6 +4,7 @@ import Chat from "../chat/chat"
 import Aside from "../aside/aside"
 import Network from "./network"
 import "./main.css"
+import { dataURItoBlob } from "../chat/file-embeds/normal-file-embed"
 
 const fileDropHandled = {}
 //if callback is empty it will just stop file drops from doing anything
@@ -25,6 +26,11 @@ function handleFileDrop (element, callback = () => {}) {
     element.ondrop = e => {
         e.preventDefault()
         e.stopPropagation()
+        console.log(e)
+        // console.log(Object.keys(e.dataTransfer.items).forEach(itemKey => {
+        //     if(e.dataTransfer.items[itemKey].kind==="other") console.log(e.dataTransfer.items[itemKey].getAsString())
+        // }))
+        
         if(element.className === "chat-main") {
             element.style.borderColor = document.documentElement.style.getPropertyValue("--accent")
         }

@@ -284,10 +284,15 @@ export default function Chat (props) {
     }
 
     useEffect(() => {
-        props.handleFileDrop(chatMain.current, e => {
+        props.handleFileDrop(chatMain.current, (e) => {
+            const newDataURI = e.dataTransfer.getData("text/plain")
+            let newTitle = e.dataTransfer.getData("title")
+            newTitle = newTitle.slice(newTitle.lastIndexOf("/") + 1)
+
             fileArrToFileStructArr(e.dataTransfer.files, files => {
-                
+                if(newDataURI && newDataURI.length) files.push({fileName: newTitle, dataURI: newDataURI})
                 files.forEach((file) => {
+                    console.log(file)
                     if(dataURISizeInMB(file.dataURI) > fileSizeLimit) {
                         files = []
                         return
