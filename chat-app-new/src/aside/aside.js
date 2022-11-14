@@ -23,21 +23,21 @@ function removePrompt(target, promptArr, setPromptArr){
 }
 
 export default function Aside (props) {
-    const enableDefaultFriends =    (window.location.pathname.includes("defaults"))
+    const enableDefaultFriends =    ((window.location.pathname.includes("defaults")) || (window.location.pathname.includes("default_friends")))
     const enableDefaultPromptArr =  (window.location.pathname.includes("defaults"))
 
     const defaultFriends = enableDefaultFriends ? [
-        {id: 1, name: "asdasdasd"}, 
-        {id: 2, name: "asdasdasd"}, 
-        {id: 3, name: "asdasdasd"}, 
-        {id: 4, name: "asdasdasd"}, 
-        {id: 5, name: "asdasdasd"}, 
-        {id: 6, name: "asdasdasd"}, 
-        {id: 7, name: "asdasdasd"}, 
-        {id: 8, name: "asdasdasd"}, 
-        {id: 9, name: "asdasdasd"}, 
-        {id: 10, name:"asdasdasd"},
-        {id: 11, name: "ababababababababababababababababababababababababababababababababababababababa"}
+        {id: 1, name: "user1"}, 
+        {id: 2, name: "user2"}, 
+        {id: 3, name: "user3"}, 
+        {id: 4, name: "user4"}, 
+        {id: 5, name: "user5"}, 
+        {id: 6, name: "user6"}, 
+        {id: 7, name: "user7"}, 
+        {id: 8, name: "user8"}, 
+        {id: 9, name: "user9"}, 
+        {id: 10, name:"user10"},
+        {id: 11, name:"user11"}
     ] : []
     
     const defaultPromptArr = enableDefaultPromptArr ? 
