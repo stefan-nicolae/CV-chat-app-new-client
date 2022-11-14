@@ -292,9 +292,8 @@ export default function Chat (props) {
             // console.log(newTitle)
 
             fileArrToFileStructArr(e.dataTransfer.files, files => {
-                if(newDataURI && newDataURI.length) files.push({fileName: newTitle, dataURI: newDataURI})
+                if(newDataURI && newDataURI.length && newDataURI.startsWith("data:") && newTitle && newTitle.length && !newTitle.startsWith(" ")) files.push({fileName: newTitle, dataURI: newDataURI})
                 files.forEach((file) => {
-                    console.log(file)
                     if(dataURISizeInMB(file.dataURI) > fileSizeLimit) {
                         files = []
                         return
