@@ -1,23 +1,32 @@
 .alert-files {
     background-color: var(--darker-gray);
     border: 1px solid var(--accent);
-    top: 50%;
-    left: 30%;
-    margin-left: -80px;
-    margin-top: -250px;
-    width: 500px;
-    height: 300px;
+    
+    max-width: 500px;
+    max-height: 300px;
+    width: 50%;
+    height: 50%;
     position: absolute;
+    top: 100px;
 
     display: flex;
     flex-wrap: wrap;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     justify-content: space-around;
 
+    border-radius: 8px;
+    z-index: 3;
+}
+
+.alert-files .mapping {
     padding: 10px;
     padding-top: 20px;
-    border-radius: 8px;
-
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .alert-files .file {
@@ -60,16 +69,18 @@
 }
 
 .alert-files .send-files {
-    position: fixed;
-    margin-left: 470px;
-    margin-top: 280px;
+    position: absolute;
     background-color: unset;
-    border: unset;
+    border: 1px solid var(--shiny);
+    border: none;
+    bottom: -30px;
+    right: 0;
     color: var(--accent);
     padding: 5px;
     cursor: pointer;
     background-color: var(--dark-gray);
-    color: var(--shiny)
+    color: var(--shiny);
+    height: 30px;
 }
 
 .alert-files .send-files:hover {

@@ -75,6 +75,7 @@ export default function AlertFiles (props) {
     
     return (
         <div className="alert-files" ref={alertFiles} data-identifier="4">
+        <div className="mapping">
         {
             files.map(file => { 
                 return (
@@ -85,6 +86,7 @@ export default function AlertFiles (props) {
                 )
             })
         } 
+        </div>
         <button onClick={() => props.sendFiles(files, setFiles([]))} className="send-files">send</button>
         </div>
     )
