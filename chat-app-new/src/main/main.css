@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
 :root {
-    --dark-gray: #0f0f0f;
-    --darker-gray: #0f0f0f;
-    --accent: rgb(49, 49, 49);
+    --dark-gray: #292929;
+    --darker-gray: #292929;
+    --accent: rgb(87, 87, 87);
     --shiny: rgb(174, 181, 194);
 }
 
@@ -72,4 +72,3 @@
     scrollbar-width: none;  /* Firefox */
   } 
 
-  

@@ -1,10 +1,11 @@
 .aside {
-    min-width: 350px;
-    max-width: 350px;
+    width: 30%;
     background-color: var(--darker-gray);
     padding: 20px;
     display: flex;
     flex-direction: column;
+    min-width: 200px;
+    position: relative;
 }
 
 .aside .uid {
@@ -211,7 +212,7 @@
 
 .aside #hide-aside-prompt {
     position: absolute;
-    left: 335px;
+    right: -5px;
     bottom: 10px;
     font-size: 20px;
     background-color: unset;
