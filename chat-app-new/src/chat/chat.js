@@ -288,6 +288,8 @@ export default function Chat (props) {
             const newDataURI = e.dataTransfer.getData("text/plain")
             let newTitle = e.dataTransfer.getData("title")
             newTitle = newTitle.slice(newTitle.lastIndexOf("/") + 1)
+            // console.log(newDataURI)
+            // console.log(newTitle)
 
             fileArrToFileStructArr(e.dataTransfer.files, files => {
                 if(newDataURI && newDataURI.length) files.push({fileName: newTitle, dataURI: newDataURI})

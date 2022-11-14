@@ -2,7 +2,7 @@
     background-color: var(--darker-gray);
     border: 1px solid var(--accent);
     top: 50%;
-    left: 50%;
+    left: 30%;
     margin-left: -80px;
     margin-top: -250px;
     width: 500px;
@@ -31,6 +31,8 @@
     /* overflow-y: scroll */
     scrollbar-width: thin;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .alert-files .close-file {
@@ -50,6 +52,7 @@
 .alert-files .file-embed {
     width: 100%;
     max-width: 100%;
+    margin-top: auto;
 }
 
 .alert-files audio.file-embed {

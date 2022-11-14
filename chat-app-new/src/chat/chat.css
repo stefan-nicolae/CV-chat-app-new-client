@@ -85,14 +85,14 @@
 }
 
 .video-file-embed, .image-file-embed {
-    max-width: 70%;
+    width: 100%;
     user-select: none;
     border-radius: 5px;
-    max-height: 300px;
+    /* max-height: 300px; */
 }
 
 .audio-file-embed {
-    width: 400px;
+    width: 100%;
     user-select: none;
 }
 
