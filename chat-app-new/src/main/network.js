@@ -2,9 +2,23 @@ import { useEffect } from "react"
 console.log("network starting")
 
 const PRODUCTION = 1
-const SERVER_URL = "cv-chat-app-server.onrender.com"
-const ADDRESS = PRODUCTION ? `wss://${SERVER_URL}` : "ws://localhost:8082"
-const socket = new WebSocket(ADDRESS)
+let socket
+
+if(PRODUCTION) {
+    try {
+        const SERVER_URL = "wss://chat.example.com"
+        socket = new WebSocket(SERVER_URL)
+    }
+    
+    catch {
+        const SERVER_URL = "wss://cv-chat-app-server.onrender.com"
+        socket = new WebSocket(SERVER_URL)
+    }
+
+} else socket = new WebSocket("ws://localhost:8082")
+
+
+
 let MYID
 let interval 
 let receivedRequestID
