@@ -1,21 +1,20 @@
 import { useEffect } from "react"
+import urlExistSync from "url-exist-sync"
 console.log("network starting")
 
 const PRODUCTION = 1
 let socket
+const SERVER_URL1 = "chat.example.com"
+const SERVER_URL2 = "cv-chat-app-server.onrender.com"
 
-if(PRODUCTION) {
-    try {
-        const SERVER_URL = "wss://chat.example.com"
-        socket = new WebSocket(SERVER_URL)
-    }
-    
-    catch {
-        const SERVER_URL = "wss://cv-chat-app-server.onrender.com"
-        socket = new WebSocket(SERVER_URL)
-    }
+if(PRODUCTION && urlExistSync(SERVER_URL1)) {
+    socket = new WebSocket("wss://" + SERVER_URL1)
+} else {
+    socket = new WebSocket("wss://" + SERVER_URL2)
+}
 
-} else socket = new WebSocket("ws://localhost:8082")
+if(!PRODUCTION)  socket = new WebSocket("wss://" + "localhost:8082")
+
 
 
 
@@ -37,7 +36,6 @@ socket.addEventListener("open", () => {
         "message": "Hey"
     })
 })
-
 
 //this is to check if your message has been received by the other peer
 export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{}) {
