@@ -4,7 +4,6 @@ import Chat from "../chat/chat"
 import Aside from "../aside/aside"
 import Network from "./network"
 import "./main.css"
-import { dataURItoBlob } from "../chat/file-embeds/normal-file-embed"
 
 const fileDropHandled = {}
 //if callback is empty it will just stop file drops from doing anything
