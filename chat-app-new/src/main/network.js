@@ -14,10 +14,10 @@ else {
     {
         socket = new WebSocket("wss://" + SERVER_URL1)  
         setTimeout(() => {
-            if(socket.readyState === 3) {
+            if(socket.readyState !== 1) {
                 window.location.pathname = window.location.pathname + "+SECONDSERVER"
             }
-        }, 3000)
+        }, 1000)
     } else {
         socket = new WebSocket("wss://" + SERVER_URL2)  
     }
