@@ -17,7 +17,7 @@ else {
             if(socket.readyState === 3) {
                 window.location.pathname = window.location.pathname + "+SECONDSERVER"
             }
-        }, 1000)
+        }, 2000)
     } else {
         socket = new WebSocket("wss://" + SERVER_URL2)  
     }
