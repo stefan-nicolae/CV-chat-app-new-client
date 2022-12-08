@@ -5,21 +5,25 @@ console.log("network starting")
 const PRODUCTION = 1
 let socket
 const SERVER_URL1 = "vladolteanu.com/stfn/chat-app"
+// const SERVER_URL1 = "chat.example.com"
 const SERVER_URL2 = "cv-chat-app-server.onrender.com"
 
 
 if(!PRODUCTION) socket = new WebSocket("wss://" + "localhost:8082")
 else {
-    if(!window.location.pathname.includes("SECONDSERVER")) 
-    {
+    if(window.localStorage.getItem("secondserver") !== "set") {
         socket = new WebSocket("wss://" + SERVER_URL1)  
+        console.log("using url1") 
         setTimeout(() => {
             if(socket.readyState !== 1) {
-                window.location.pathname = window.location.pathname + "+SECONDSERVER"
+                window.localStorage.setItem("secondserver", "set")
+                window.location.reload()            
             }
         }, 1000)
-    } else {
-        socket = new WebSocket("wss://" + SERVER_URL2)  
+    }
+    else {
+        socket = new WebSocket("wss://" + SERVER_URL2) 
+        console.log("using url2") 
     }
 }
     
