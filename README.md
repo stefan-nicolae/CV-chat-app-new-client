@@ -4,4 +4,4 @@ Demo --> https://stefan-nicolae.github.io/CV-webdev-showcase/chatdemo.html
 
 https://cv-chat-app.netlify.app/
 
-Server: https://github.com/stefan-nicolae/CV-chat-app-new-server
+Server repo: https://github.com/stefan-nicolae/CV-chat-app-new-server
