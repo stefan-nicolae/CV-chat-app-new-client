@@ -1,19 +1,15 @@
 .alert-files {
     background-color: var(--darker-gray);
     border: 1px solid var(--accent);
-    
     max-width: 500px;
     max-height: 300px;
     width: 50%;
     height: 50%;
     position: absolute;
     top: 100px;
-
     display: flex;
     flex-wrap: wrap;
-    /* overflow-y: scroll; */
     justify-content: space-around;
-
     border-radius: 8px;
     z-index: 3;
 }
@@ -37,7 +33,6 @@
     word-break: break-all;
     position: relative;
     border: 1px solid var(--accent);
-    /* overflow-y: scroll */
     scrollbar-width: thin;
     border-radius: 8px;
     display: flex;

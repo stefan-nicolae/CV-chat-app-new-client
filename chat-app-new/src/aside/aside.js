@@ -42,20 +42,12 @@ export default function Aside (props) {
     
     const defaultPromptArr = enableDefaultPromptArr ? 
     [
-        "testt ", 
-        "testtt", 
-        "testttt",
-        "testt ",
-        "testtt",
-        "testttt",
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
     ] : []
 
     const aside = useRef()
     const key=useRef(0)
-    const friends = useRef(defaultFriends) //array
+    const friends = useRef(defaultFriends) 
     const friendsRequestsSent = useRef({})
     const lastRequestReceived = useRef()
     const promptIndex = useRef(0)
@@ -84,7 +76,6 @@ export default function Aside (props) {
         updatePromptArr(promptInformation)
     }
 
-    //addpeer send
     const addPeer= (id, nickname) => {
         let pass = true
         if(id == props.MYID) return
@@ -116,7 +107,6 @@ export default function Aside (props) {
 
     
     const addFriendGUI =(id, nickname=undefined, CALLBACKINDEX=undefined) => {
-        //the one who has the callback index does not have the nickname
         const addThem = () => {
             friends.current.forEach(friend => {
                 friend.is_selected = false
@@ -126,7 +116,6 @@ export default function Aside (props) {
                     id: id, name: nickname, is_selected: true
                 }
             )
-            //here
             const waitForIt = () => {
                 Network.waitForRequestID(id + "still_there", () => { waitForIt() }, () => {
                     getRemoved(id, true)
@@ -145,7 +134,6 @@ export default function Aside (props) {
             },100)
         }
         
-        //receive requestID here
         if(nickname) {
                 Network.waitForRequestID(id + "fine_to_add", () => {
                     addThem()
@@ -153,7 +141,6 @@ export default function Aside (props) {
         }
         else{
             removePrompt(CALLBACKINDEX, promptArr, setPromptArr)
-            //PROMPT SET NICKNAME
             const INDEX = promptIndex.current++
             updatePromptArr(
                 <div className="set-nickname-prompt" >
@@ -164,7 +151,6 @@ export default function Aside (props) {
                             if(nickname.startsWith(" ") || nickname.startsWith("#") || nickname === "" || nickname.length > 16) return
 
                             removePrompt(INDEX, promptArr, setPromptArr)
-                            //send requestUD
                             Network.sendRequest({
                                 "msgType": "requestSucceeded",
                                 "peerID": id,
@@ -180,11 +166,6 @@ export default function Aside (props) {
     
     
     const getAdded = (request) => {
-        // let pass = true
-        // friends.current.forEach(friend => {
-        //     if(friend.id == request.senderID) { pass=false; return }
-        // })
-        // if(!pass) return
         if(request.requestID && friendsRequestsSent.current[request.senderID]) {
             Network.sendRequest({
                 "msgType": "requestSucceeded",
@@ -195,14 +176,12 @@ export default function Aside (props) {
         }
         else {
             if(props.blockList.current[request.senderID]) return
-            //PROMPT ADD FRIEND
             const INDEX = promptIndex.current++
             updatePromptArr(
                 <p className="add-friend-prompt">
                     { request.senderID } wants to add you. 
     
                     <span onClick={(event) => {
-                        //accept
                         removePrompt(INDEX, promptArr, setPromptArr)
     
                         const requestID = Math.random()
@@ -215,13 +194,10 @@ export default function Aside (props) {
                         Network.waitForRequestID(requestID, () => {                            
                             addFriendGUI(request.senderID, undefined, INDEX)
                         })
-                         
-                      
                     }}>accept </span>
     
                     <span onClick={(event) => {
-                        //decline
-                        //DELETED
+
                         props.blockList.current[request.peerID] = true
                         removePrompt(INDEX, promptArr, setPromptArr)
                     }}>decline </span>
@@ -272,7 +248,6 @@ export default function Aside (props) {
     if(props.requestReceived !== lastRequestReceived.current) {
         lastRequestReceived.current = props.requestReceived 
         switch(props.requestReceived.msgType) { 
-            // ADDPEER RECEIVE
             case "addPeer": 
                 getAdded(props.requestReceived)
                 break
@@ -296,7 +271,6 @@ export default function Aside (props) {
         }   
     }
 
-    //addpeer send
     const handleInput = (event) => {
         if(event.code === "Enter") {
             const value = event.currentTarget.value
@@ -328,7 +302,6 @@ export default function Aside (props) {
                     return(<Friend last_isItScrolledDown={last_isItScrolledDown.current} isItScrolledDown={props.isItScrolledDown} lastMessageAlert={lastMessageAlert.current} newMsgCounter={newMsgCounter.current} messageAlert={messageAlert} removePeer={removePeer} key={key.current++} INTERLOCUTOR={props.INTERLOCUTOR} setINTERLOCUTOR={props.setINTERLOCUTOR} friend={friend} friends={friends}/>)
                 })
             }
-            {/* ADDPEER SEND */}
             <div className="friend add-friend">
                 <span className="plus"><iconify-icon icon="ant-design:plus-circle-twotone"></iconify-icon></span>
                 <input onKeyDown={event => handleInput(event)} placeholder="nickname_of_your_choice#their_ID"></input>

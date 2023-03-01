@@ -3,10 +3,8 @@ import {useState,useRef} from "react"
 
 
 export default function MediaMessage (props) {
-   
     const [className, setClassName] = useState(`message media-message ${props.me ? "me" : "them"}`)
     const lastScroll = useRef()
-
 
     if(props.isClosed && !className.includes("msgClosed")) {
         setClassName(className + " msgClosed")
@@ -22,6 +20,7 @@ export default function MediaMessage (props) {
             setClassName(className+" fullscreen")
         }
     }
+    
     return(<div className={className}>
         {props.file.fileType !== "file" ? 
         props.generateFileEmbed(props.file, () => addFullscreen(className, setClassName, props.scroll, props.resetScroll)) : 

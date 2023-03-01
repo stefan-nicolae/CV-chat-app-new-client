@@ -1,74 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
 :root {
-    --dark-gray: #292929;
-    --darker-gray: #292929;
-    --accent: rgb(87, 87, 87);
-    --shiny: rgb(174, 181, 194);
+  --dark-gray: #292929;
+  --darker-gray: #292929;
+  --accent: rgb(87, 87, 87);
+  --shiny: rgb(174, 181, 194);
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 0.98em;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.98em;
 }
 
 .container {
-    background-color: var(--dark-gray);
-    height: 100vh;
+  background-color: var(--dark-gray);
+  height: 100vh;
 }
 
 .container-main {
-    display: flex;
+  display: flex;
 }
 
 .startup {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    flex-direction: column;
-    color: var(--shiny);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+  color: var(--shiny);
 }
 
 .startup input {
-    width: 300px;
-    border: 1px solid var(--accent);
-    padding: 3px;
-    margin-top: 10px;
-    background-color: unset;
-    color: white;
-    font-size: 12px;
+  width: 300px;
+  border: 1px solid var(--accent);
+  padding: 3px;
+  margin-top: 10px;
+  background-color: unset;
+  color: white;
+  font-size: 12px;
 }
 
 .startup input:focus {
-    outline: none;
+  outline: none;
 }
 
- /* Hide scrollbar for Chrome, Safari and Opera */
- .friends::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .friends {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  } 
+.friends::-webkit-scrollbar {
+  display: none;
+}
 
-  
+.friends {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+} 
 
+  .aside-prompt::-webkit-scrollbar {
+  display: none;
+}
 
-   /* Hide scrollbar for Chrome, Safari and Opera */
- .aside-prompt::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .aside-prompt {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  } 
+.aside-prompt {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+} 
 

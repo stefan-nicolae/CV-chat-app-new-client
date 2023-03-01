@@ -6,7 +6,6 @@ import Network from "./network"
 import "./main.css"
 
 const fileDropHandled = {}
-//if callback is empty it will just stop file drops from doing anything
 function handleFileDrop (element, callback = () => {}) {
     if(element === null || element === undefined || element.dataset.identifier === undefined || fileDropHandled[element.dataset.identifier] === true) return
     fileDropHandled[element.dataset.identifier] = true
@@ -25,11 +24,6 @@ function handleFileDrop (element, callback = () => {}) {
     element.ondrop = e => {
         e.preventDefault()
         e.stopPropagation()
-        console.log(e)
-        // console.log(Object.keys(e.dataTransfer.items).forEach(itemKey => {
-        //     if(e.dataTransfer.items[itemKey].kind==="other") console.log(e.dataTransfer.items[itemKey].getAsString())
-        // }))
-        
         if(element.className === "chat-main") {
             element.style.borderColor = document.documentElement.style.getPropertyValue("--accent")
         }
@@ -47,7 +41,7 @@ export default function Container () {
     const [newMSG, setNewMSG] = useState()
     const [INTERLOCUTOR, setINTERLOCUTOR] = useState()
     const [requestReceived, setRequestReceived] = useState()
-    const [asidePromptInformation, addToAsidePrompt] = useState() //prompt on the bottom left
+    const [asidePromptInformation, addToAsidePrompt] = useState() 
     const [isItScrolledDown, set_isItScrolledDown] = useState()
 
     useEffect(() => {

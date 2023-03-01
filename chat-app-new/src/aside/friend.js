@@ -1,7 +1,5 @@
 
 export default function Friend (props) {    
-    console.log(props.isItScrolledDown)
-
     if(props.newMsgCounter[props.friend.id] === undefined) props.newMsgCounter[props.friend.id] = 0 //leave this as is
     if(props.last_isItScrolledDown[props.friend.id] === undefined) props.last_isItScrolledDown[props.friend.id] = true
 
@@ -18,17 +16,13 @@ export default function Friend (props) {
         }
     }
 
-    //new message incoming
     if(props.lastMessageAlert[props.friend.id] !== props.messageAlert) {
         props.lastMessageAlert[props.friend.id] = props.messageAlert
 
-
         if(props.messageAlert.id == props.friend.id) {
-            //if the friend is different from props.interlocutor just update the message normally
             if(props.friend.id !== props.INTERLOCUTOR) {     
                 props.newMsgCounter[props.friend.id]++
             } else {
-                //if the friend is the same as props.interlocutor, check if it's NOT scrolled down 
                 if(props.last_isItScrolledDown[props.friend.id] !== true) {
                     props.newMsgCounter[props.friend.id]++
                 } else {
@@ -39,7 +33,6 @@ export default function Friend (props) {
         }
     }
 
-    //USE A FRIENDS OBJECT THAT YOU CAN THEN MODIFY 
     let className = "friend"
     if(props.friend.is_selected) className += " friend-selected"
     if(props.friend.is_closed) className += " enemy"

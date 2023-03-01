@@ -8,7 +8,6 @@ const audioFormats = ["flac", "mp3", "wav", "ogg"]
 function getFileType(file) {
     let fileType = undefined
     const dataURI = file.dataURI, fileName = file.fileName
-
     const testFormat = (type, formats) => {
         if(fileType !== undefined) return
         if(dataURI.startsWith("data:" + type)) {
@@ -20,7 +19,6 @@ function getFileType(file) {
             })
         }
     }
-
     testFormat("audio", audioFormats)
     testFormat("video", videoFormats)
     testFormat("image", imageFormats)
@@ -33,7 +31,6 @@ function generateFileObject (file) {
 }
 
 function closeFile(event, files, setFiles, closeAlertFiles) {
-    console.log("running")
     const key = event.target.parentElement.parentElement.dataset.key
     const filesNew = []
     for(let i = 0; i < files.length; i++) {

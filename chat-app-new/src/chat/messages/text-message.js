@@ -3,7 +3,6 @@ function isValidURL(string) {
     return (res !== null)
   };
 
-  
   export default function TextMessage (props) {
       const className = `message text-message ${props.me ? "me" : "them"} ${props.isClosed ? "msgClosed" : ""}`
       if(isValidURL(props.message)) {

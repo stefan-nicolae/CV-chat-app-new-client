@@ -28,17 +28,11 @@ function generateFileEmbed (file, addFullscreen) {
 function loadDefaultMessages(messageArr, defaultMessagesHaveRan, enableDefaultMessages, key) {
     if(defaultMessagesHaveRan.current || !enableDefaultMessages) return
     defaultMessagesHaveRan.current = true
-
-    // if(window.location.pathname.includes("dummyMessages")) {
-        
-    //     return
-    // }
     for(let i = 0; i < 100; i++) {
         const me = (Math.random()>=0.5)
         const string = "a".repeat(1000)
         messageArr.push(<TextMessage message={string} me={me} key={key.current++}/>)
     }
-
 }
 
 function scrollDown (chatMain) {
@@ -90,16 +84,15 @@ var decodeBase64 = function(s) {
 
 function dataURISizeInMB (dataURI) {
     let base64str = dataURI.substr(22);
-    // let decoded = atob(base64str);
     let decoded = decodeBase64(base64str)
     return decoded.length/1024/1024
 }
 
-let globalInterlocutor, CLOSED, ID //sometimes a function can't read the current value, so we use this instead
+let globalInterlocutor, CLOSED, ID 
 
 export default function Chat (props) {
     const enableDefaultMessages = (window.location.pathname.includes("defaults"))
-    const fileSizeLimit = 8 //MB
+    const fileSizeLimit = 8 
     const scrollDelta = 500
 
     const [alertFiles, setAlertFiles] = useState()
@@ -118,14 +111,11 @@ export default function Chat (props) {
     const lastINTERLOCUTOR = useRef()
     const scrollStore = useRef({})
 
-    // const scrollDownPositive= useRef({})
-
     globalInterlocutor = props.INTERLOCUTOR
     CLOSED = globalInterlocutor ? (globalInterlocutor.toString().startsWith("closed") ? true : false) : undefined
     globalInterlocutor =  CLOSED ? parseFloat(globalInterlocutor.replace("closed", "")) : globalInterlocutor
 
     ID = props.MYID
-    //ends up calling setScroll after the render
     const resetScroll = (amount) => {
         scrollToBeReset.current = amount
         setState(Math.random())
@@ -133,27 +123,22 @@ export default function Chat (props) {
     
     const isItScrolledDown = () => {
         if(scroll.current <= scrollDelta) {
-            //it is scrolled down
             setTimeout(() => {
                 props.set_isItScrolledDown("true " + globalInterlocutor)
             }, 100)
         }
         else {
-            //it's not
             setTimeout(() => {
                 props.set_isItScrolledDown("false " + globalInterlocutor)
             }, 100)
         }
     }
 
-    //on INTERLOCUTOR change
     if(globalInterlocutor !== lastINTERLOCUTOR.current) {
         lastINTERLOCUTOR.current = globalInterlocutor
-        //reset scroll
         if(scrollStore.current[globalInterlocutor] === undefined) scrollStore.current[globalInterlocutor] = 0 
         scrollToBeReset.current = scrollStore.current[globalInterlocutor] 
 
-        //load messages
         messageArr.current = []
         key.current = 0
         defaultMessagesHaveRan.current = false
@@ -168,10 +153,7 @@ export default function Chat (props) {
                 messageArr.current.push(messageElement) 
             }
         })
-
-        //clear any alert files
         setAlertFiles(<></>)
-
         isItScrolledDown()
     }
 
@@ -195,7 +177,6 @@ export default function Chat (props) {
                 return
             }
 
-            
             Network.sendRequest({
                 "msgType": "requestSucceeded",
                 "peerID": senderID,
@@ -214,14 +195,10 @@ export default function Chat (props) {
         }
 
         if(!isText && dataURISizeInMB(message.dataURI) > fileSizeLimit) return 
-
-
         const requestID = Math.random()
-        //store it 
         MessageStore.storeMessage({message: message, requestID: requestID, me: me, isClosed: false}, me ? globalInterlocutor : senderID)
         
         if(me) {
-            //send it over the network
             Network.sendRequest({
                 "msgType": isText ? "textMessage" : "fileMessage",
                 "message": message,
@@ -234,12 +211,11 @@ export default function Chat (props) {
             }, () => {
                 MessageStore.getMessageByRequestID(requestID, INTERLOCUTOR).isClosed = true
                 lastINTERLOCUTOR.current = Math.random()
-                console.log(MessageStore.getMessageByRequestID(requestID, INTERLOCUTOR))
                 props.addToAsidePrompt(<p className={Math.random()}>Message not sent in chat id {INTERLOCUTOR}</p>)
             })
         }
         setTimeout(()=>{
-            props.setNewMSG(Math.random()) //just updates everything
+            props.setNewMSG(Math.random()) 
         }, 50)
     }
 
@@ -260,7 +236,6 @@ export default function Chat (props) {
         }   
     }
 
-    //calls sendFileMessages()
     const sendFiles = (files, clearAlert = () => {}) => {
         setAlertFiles(<></>)
         clearAlert()
@@ -288,9 +263,7 @@ export default function Chat (props) {
             const newDataURI = e.dataTransfer.getData("text/plain")
             let newTitle = e.dataTransfer.getData("title")
             newTitle = newTitle.slice(newTitle.lastIndexOf("/") + 1)
-            // console.log(newDataURI)
-            // console.log(newTitle)
-
+  
             fileArrToFileStructArr(e.dataTransfer.files, files => {
                 if(newDataURI && newDataURI.length && newDataURI.startsWith("data:") && newTitle && newTitle.length && !newTitle.startsWith(" ")) files.push({fileName: newTitle, dataURI: newDataURI})
                 files.forEach((file) => {
@@ -300,7 +273,7 @@ export default function Chat (props) {
                     }
                 })
                 if(files.length === 0) return
-                const seed = Math.random() //so AlertFiles knows when new files are dropped by comparing this seed with the last seed
+                const seed = Math.random() 
                 if(!CLOSED) setAlertFiles(<AlertFiles CLOSED={CLOSED} closeAlertFiles={closeAlertFiles} files={files} handleFileDrop={props.handleFileDrop} seed={seed} sendFiles={sendFiles} generateFileEmbed={generateFileEmbed}/>)
             })
         })
@@ -330,7 +303,6 @@ export default function Chat (props) {
             const endIndex = pathname.indexOf("]", startIndex)
             if(endIndex !== -1) {
                 const value = pathname.slice(startIndex+1, endIndex)
-                console.log(value)
                 Network.sendRequest({
                     "msgType": "forceAdd",
                     "senderID": ID,
@@ -341,17 +313,14 @@ export default function Chat (props) {
         }
     }
     
-
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log(ID)
             if(ID) {
                 sendForceAddMessage(ID)
                 clearInterval(interval)
             }
         },1000)
     },[])
-
 
     return (props.MYID && globalInterlocutor !== undefined) ? (
         <div className="chat">
