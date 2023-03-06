@@ -12,7 +12,7 @@ function isValidURL(string) {
 
     return(<div className={className}>
         {
-            isValidURL(props.message) ?<a href={props.message}>{props.message}</a> : props.message
+            isValidURL(props.message) ?<a href={props.message} target="_blank">{props.message}</a> : props.message
         }
     </div>)
 }
