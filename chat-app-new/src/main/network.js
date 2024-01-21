@@ -3,7 +3,7 @@ import { useEffect } from "react"
 const PRODUCTION = 1
 let socket
 const SERVER_URL1 = "vladolteanu.com/stfn/chat-app"
-const SERVER_URL2 = "cv-chat-app-server.onrender.com"
+// const SERVER_URL1 = "cv-chat-app-server.onrender.com"
 let MYID
 let interval 
 let receivedRequestID
