@@ -143,7 +143,7 @@ export default function Chat (props) {
         messageArr.current = []
         key.current = 0
         defaultMessagesHaveRan.current = false
-        loadDefaultMessages(messageArr.current, defaultMessagesHaveRan, enableDefaultMessages, key) //will only run once
+        loadDefaultMessages(messageArr.current, defaultMessagesHaveRan, enableDefaultMessages, key)
         MessageStore.getMessages(globalInterlocutor).forEach(message => {
             if(typeof(message.message) === "object") {
                 const messageElement = <MediaMessage scroll={scroll} resetScroll={resetScroll} message={message.message} file={message.message} me={message.me} key={key.current++} generateFileEmbed={generateFileEmbed} isClosed={message.isClosed}/>
@@ -234,6 +234,10 @@ export default function Chat (props) {
             case "textMessage":
                 sendMessage(request.message, false, true, request, request.senderID)
                 break
+            default: 
+                console.log("request received", request)
+                break
+
         }   
     }
 
