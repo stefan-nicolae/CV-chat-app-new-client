@@ -4,6 +4,7 @@ import Chat from "../chat/chat"
 import Aside from "../aside/aside"
 import Network from "./network"
 import "./main.css"
+import { URLkeywords } from '../parameters.js';
 
 const fileDropHandled = {}
 function handleFileDrop (element, callback = () => {}) {
@@ -32,7 +33,6 @@ function handleFileDrop (element, callback = () => {}) {
 }
 
 export default function Container () {
-    const URLkeywords = Array.from(new URLSearchParams(window.location.search).getAll('keywords'))[0].replaceAll(" ", '').split(",");
     const enableStartup = (!URLkeywords.includes("defaults")) && (!URLkeywords.includes("nologin"))
 
     const blockList = useRef({})

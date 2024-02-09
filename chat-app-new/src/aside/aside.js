@@ -2,6 +2,7 @@ import "./aside.css"
 import { useEffect, useRef, useState } from "react"
 import Friend from "./friend"
 import * as Network from "../main/network" 
+import { URLkeywords } from '../parameters.js';
 
 function scrollDown (asidePrompt) {
     if(asidePrompt.current !== undefined) {
@@ -23,8 +24,6 @@ function removePrompt(target, promptArr, setPromptArr){
 }
 
 export default function Aside (props) {
-    const URLkeywords = Array.from(new URLSearchParams(window.location.search).getAll('keywords'))[0].replaceAll(" ", '').split(",");
-
     const enableDefaultFriends =    ((URLkeywords.includes("defaults")) || (URLkeywords.includes("default_friends")))
     const enableDefaultPromptArr =  (URLkeywords.includes("defaults"))
 

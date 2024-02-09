@@ -8,6 +8,7 @@ import ImageFileEmbed from "./file-embeds/image-file-embed"
 import * as Network from "../main/network" 
 import { useEffect, useRef, useState } from "react"
 import * as MessageStore from "./message-store"
+import { URLkeywords, chatID } from '../parameters.js';
 
 function generateFileEmbed (file, addFullscreen) {
     const getEmbedFileType = dataURI => {
@@ -89,8 +90,6 @@ function dataURISizeInMB (dataURI) {
 }
 
 let globalInterlocutor, CLOSED, ID 
-const URLkeywords = Array.from(new URLSearchParams(window.location.search).getAll('keywords'))[0].replaceAll(" ", '').split(",");
-const chatID = Array.from(new URLSearchParams(window.location.search).getAll('chatID'))[0]
 
 export default function Chat (props) {
     const enableDefaultMessages = (URLkeywords.includes("defaults"))
@@ -298,13 +297,13 @@ export default function Chat (props) {
     })
 
     const sendForceAddMessage = (ID) => {
-        Network.sendRequest({
-            "msgType": "forceAdd",
-            "senderID": ID,
-            "chatID": chatID,
-            "nickname": props.nickname
-        })
-    }
+            Network.sendRequest({
+                "msgType": "forceAdd",
+                "senderID": ID,
+                "chatID": chatID,
+                "nickname": props.nickname
+            })   
+     }
     
     useEffect(() => {
         const interval = setInterval(() => {
