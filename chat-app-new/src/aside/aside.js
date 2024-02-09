@@ -23,8 +23,10 @@ function removePrompt(target, promptArr, setPromptArr){
 }
 
 export default function Aside (props) {
-    const enableDefaultFriends =    ((window.location.pathname.includes("defaults")) || (window.location.pathname.includes("default_friends")))
-    const enableDefaultPromptArr =  (window.location.pathname.includes("defaults"))
+    const URLkeywords = Array.from(new URLSearchParams(window.location.search).getAll('keywords'))[0].replaceAll(" ", '').split(",");
+
+    const enableDefaultFriends =    ((URLkeywords.includes("defaults")) || (URLkeywords.includes("default_friends")))
+    const enableDefaultPromptArr =  (URLkeywords.includes("defaults"))
 
     const defaultFriends = enableDefaultFriends ? [
         {id: 1, name: "user1"}, 

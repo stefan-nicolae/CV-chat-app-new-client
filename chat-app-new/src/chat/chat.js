@@ -89,9 +89,11 @@ function dataURISizeInMB (dataURI) {
 }
 
 let globalInterlocutor, CLOSED, ID 
+const URLkeywords = Array.from(new URLSearchParams(window.location.search).getAll('keywords'))[0].replaceAll(" ", '').split(",");
+const chatID = Array.from(new URLSearchParams(window.location.search).getAll('chatID'))[0]
 
 export default function Chat (props) {
-    const enableDefaultMessages = (window.location.pathname.includes("defaults"))
+    const enableDefaultMessages = (URLkeywords.includes("defaults"))
     const fileSizeLimit = 8 
     const scrollDelta = 500
 
@@ -296,21 +298,12 @@ export default function Chat (props) {
     })
 
     const sendForceAddMessage = (ID) => {
-        const pathname = window.location.pathname
-        const index = pathname.indexOf("chatID=[")
-        if(index !== -1) {
-            const startIndex = pathname.indexOf("[", index)
-            const endIndex = pathname.indexOf("]", startIndex)
-            if(endIndex !== -1) {
-                const value = pathname.slice(startIndex+1, endIndex)
-                Network.sendRequest({
-                    "msgType": "forceAdd",
-                    "senderID": ID,
-                    "chatID": value,
-                    "nickname": props.nickname
-                })
-            }
-        }
+        Network.sendRequest({
+            "msgType": "forceAdd",
+            "senderID": ID,
+            "chatID": chatID,
+            "nickname": props.nickname
+        })
     }
     
     useEffect(() => {

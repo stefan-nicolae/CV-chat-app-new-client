@@ -32,7 +32,8 @@ function handleFileDrop (element, callback = () => {}) {
 }
 
 export default function Container () {
-    const enableStartup = (!window.location.pathname.includes("defaults")) && (!window.location.pathname.includes("nologin"))
+    const URLkeywords = Array.from(new URLSearchParams(window.location.search).getAll('keywords'))[0].replaceAll(" ", '').split(",");
+    const enableStartup = (!URLkeywords.includes("defaults")) && (!URLkeywords.includes("nologin"))
 
     const blockList = useRef({})
 
