@@ -235,7 +235,6 @@ export default function Chat (props) {
                 sendMessage(request.message, false, true, request, request.senderID)
                 break
             default: 
-                console.log("request received", request)
                 break
 
         }   
