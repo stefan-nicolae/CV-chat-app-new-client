@@ -1,6 +1,6 @@
 # CV-chat-app-new-client
 
-Demo --> https://stefan-nicolae.github.io/CV-museum/chatdemo.html
+Demo --> [https://stefan-nicolae.github.io/CV-museum/chatdemo.html](https://stefan-nicolae.github.io/CV-museum/frame-demo.html?name=chat)
 
 https://cv-chat-app.netlify.app/
 
