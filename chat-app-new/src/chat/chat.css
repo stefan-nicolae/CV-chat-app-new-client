@@ -1,11 +1,14 @@
 .chat {
     height: 100%;
-    width: 70%;
+    width: 100%;
     padding: 20px;
+    background-color: var(--transparent-gray);
+    margin-left: 20px;
+    border-radius: 8px;
 }
 
 .chat-main {
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     height: calc(90% - 20px);
     margin-bottom: 10px;
     overflow-y: scroll;
@@ -16,13 +19,12 @@
 }
 
 .message {
-    background-color: var(--darker-gray); 
     word-wrap: break-word;
     max-width: 70%;
     margin-bottom: 10px;
     padding: 10px 15px;
-    color: white;
-    white-space: pre-line;
+    color: var(--black);
+   white-space: pre-line;
     border-radius: 10px
 }
 
@@ -31,29 +33,35 @@
 }
 
 .message.them  {
-    background-color: rgb(54, 54, 54);
+    background-color: var(--message-them);
 }
 
 .message.me {
     align-self: flex-end;
     width: 100%;
-    background-color: rgb(116, 47, 62);
+    background-color: var(--message-me);
 }
 
 .chat-input {
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     height: calc(10% + 10px);
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 8px;
 }
 
+.chat-input textarea::placeholder {
+    color: var(--light-gray);
+    opacity: 1;
+}
+
 .chat-input textarea {
+    font-size: 15px;
     height: 100%;
     width: 100%;
     background-color: unset;
     border: unset;
-    color: white;
+    color: var(--black);
     overflow-y: scroll;
     resize: none;
 }
@@ -73,12 +81,11 @@
 
 .normal-file-embed {
     cursor: pointer;
-    color: var(--shiny);
     text-decoration: underline;
 }
 
 .normal-file-embed:active {
-    color: var(--accent)
+    color: var(--black)
 }
 
 .video-file-embed, .image-file-embed {
@@ -110,20 +117,20 @@
     max-height: unset;
 }
 .fullscreen p {
-    font-size: x-large;
+    font-size: 40px;
 }
 .scroll-down {
     display: block;
     height: 30px;
     width: 30px;
-    color: var(--accent);
+    color: var(--black);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 25px;
     cursor: pointer;
-    margin-left: -40px;
-    margin-top: -45px;
+    left: 270px;
+    bottom: 105px;
     position: absolute;
     
 }
@@ -133,7 +140,7 @@
 }
 
 .scroll-down.chat-closed {
-    margin-top: -114px;
+    margin-top: -116px;
 
 }
 
@@ -151,10 +158,10 @@
 
 .chat-main.chat-closed {
     height: 100%;
-    background-color: var(--darker-gray);
-    border-color: black;
+    background-color: var(--transparent-gray);
+    border-color: var(--black);
 }
 
 .msgClosed {
-    border: 1px solid red;
+    border: 1px solid var(--alert);
 }

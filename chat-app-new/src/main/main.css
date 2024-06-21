@@ -1,23 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
+@font-face {
+  font-family: 'HelveticaRegular';
+  src: url('Helvetica\ Regular.otf') format('opentype');
+}
+
+
 :root {
-  --dark-gray: #292929;
-  --darker-gray: #292929;
-  --accent: rgb(87, 87, 87);
-  --shiny: rgb(174, 181, 194);
+  --transparent-gray: rgba(122, 122, 122, 0.2);
+  --black: rgb(41, 41, 41);
+  --border: rgba(56, 56, 56, 0.1);
+  --shiny: rgba(101, 102, 145, 0.13);
+  --light-gray: rgb(129, 129, 129);
+  --message-me: rgba(101, 102, 145, 0.39);
+  --message-them: rgba(126, 126, 126, 0.4);
+  --alert: rgb(255, 145, 145);
+
+  
+  --enemy-background: rgb(117, 117, 117);
+  --s-enemy-background:rgb(97, 97, 97);
+  --enemy-text: rgb(87, 87, 87);
+  --enemy-id-background: var(--black);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 0.98em;
+  font-family: 'HelveticaRegular', 'Open Sans', sans-serif;
 }
 
 .container {
-  background-color: var(--dark-gray);
+  padding: 20px;
   height: 100vh;
+  background: linear-gradient(180deg, rgb(235, 235, 235) 0%, rgba(44, 202, 250, 0.123) 100%); 
 }
 
 .container-main {
@@ -30,17 +46,16 @@
   align-items: center;
   height: 100%;
   flex-direction: column;
-  color: var(--shiny);
+  color: var(--black);
 }
 
 .startup input {
   width: 300px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--border);
   padding: 3px;
   margin-top: 10px;
   background-color: unset;
-  color: white;
-  font-size: 12px;
+  color: var(--black);
 }
 
 .startup input:focus {

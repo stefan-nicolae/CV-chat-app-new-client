@@ -1,30 +1,29 @@
 .aside {
-    width: 30%;
-    background-color: var(--darker-gray);
+    width: 300px;
+    min-width: 300px;
+    background-color: var(--transparent-gray);
     padding: 20px;
     display: flex;
     flex-direction: column;
-    min-width: 200px;
-    max-width: 400px;
+    border-radius: 8px;
     position: relative;
 }
 
 .aside .uid {
-    color: white;
-    border: 1px solid var(--accent);
+    color: var(--black);
+    border: 1px solid var(--border);
     padding: 10px;
-    font-size: larger;
+    font-size: 15fpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 40px;
     border-radius: 8px;
-    font-size: 14px;
 }
 
 .aside .friends {
     border-radius: 8px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     margin-top: 10px;
     flex: 1;
     padding: 10px;
@@ -34,11 +33,11 @@
 }
 
 .aside .friend {
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     margin-bottom: 10px;
     height: 50px;
     padding: 5px;
-    color: white;
+    color: var(--black);
     cursor: pointer;
     position: relative;
     display: flex;
@@ -53,18 +52,18 @@
 
 .aside .close-friend {
     cursor: pointer;
-    color: var(--accent);
+    color: var(--black);
     user-select: none;
     margin-right: 5px;
 }
 
 .aside .close-friend:hover {
-    color: white;
+    color: var(--black);
 }
 
 .aside .friend .friend-id {
-    background-color: var(--accent);
-    color: var(--shiny);
+    background-color: var(--black);
+    color: var(--light-gray);
     position: absolute;
     top: 1px;
     right: 1px;
@@ -79,44 +78,43 @@
 
 .aside .friend-selected {
     background-color: var(--shiny);
-    color: black;
+    color: var(--black);
 }
 
 .aside .enemy {
-    background-color: rgb(56, 56, 56);
-    color: rgb(97, 97, 97)
+    background-color: var(--enemy-background);
+    color: var(--enemy-text);
 }
 
 .aside .enemy .close-friend {
-    color: rgb(97, 97, 97);
+    color: var(--enemy-text);
 }
 
 .aside .friend-selected.enemy {
-    background-color: rgb(29, 29, 29);
-    color: rgb(56, 56, 56);
+    background-color: var(--s-enemy-background);
+    color: var(--enemy-text);
 }
 
 .aside .friend-selected.enemy .close-friend {
-    color: rgb(56, 56, 56);
+    color: var(--enemy-text);
 }
 
 .aside .enemy .friend-id {
-    background-color: rgb(39, 39, 39);
+    background-color: var(--black);
 }
 
 .aside .add-friend {
     display: flex;
     justify-content: center;
     align-content: center;
-    font-size: 35px;
 }
 
 .aside .add-friend input::placeholder {
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .aside .add-friend input {
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .aside .add-friend:hover .plus {
@@ -129,16 +127,26 @@
 
 .aside .plus {
     cursor: pointer;
-    color: var(--accent);
+    color: var(--light-gray);
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.aside .plus iconify-icon {
+    font-size: 30px;
+    margin-right: 5px;
 }
 
 .aside input {
     background-color: unset;
     border: unset;
-    color: white;
+    color: var(--black);
     width: 100%;
     height: 100%;
     display: none;
+    text-indent: 20px;
+    
 }
 
 .aside input:focus {
@@ -146,12 +154,13 @@
 }
 
 .aside input::placeholder {
-    text-align: center;
+    color: var(--light-gray);
+    opacity: 1;
 }
 
 .aside .aside-prompt {
     height: 100px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     overflow-y:scroll ;
     color: var(--shiny);
     border-radius: 8px;
@@ -161,10 +170,16 @@
 
 .aside .aside-prompt-item {
     word-wrap: break-word;
+    color: var(--black); 
+    user-select: none;
+    /* width: 80%; */
+    margin-left: 5px;
+    margin-right: 30px;
 }
 
 .aside .aside-prompt-item > * {
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid var(--transparent-gray);
+    line-height: 25px;
 }
 
 .aside .add-friend-prompt {
@@ -174,16 +189,16 @@
 
 .aside .add-friend-prompt span {
     background-color: var(--shiny);
-    color: black;
-    padding: 1px;
+    color: var(--black);
+    padding: 2px 5px;
     border-radius: 5px;
     cursor: pointer;
     margin-left: 5px;
 }
 
 .aside .add-friend-prompt span:hover{
-    background-color: black;
-    color: white;
+    /* background-color: var(--black); */
+    color: var(--light-gray);
 }
 
 .aside .set-nickname-prompt {
@@ -199,28 +214,31 @@
 }
 
 .aside .new-message {
-    color: red; 
+    color: var(--alert); 
     background-color: rgb(255, 255, 255);
     position: absolute; 
-    padding: 0 4px;
+    padding: 0 5px;
     right: 0;
     bottom: 0;
 }
 
 .aside #hide-aside-prompt {
     position: absolute;
-    right: -5px;
-    bottom: 10px;
+    right: 25px;
+    bottom: 20px;
     font-size: 20px;
     background-color: unset;
     border: unset;
     cursor: pointer;
-    color: var(--accent);
+    color: var(--black);
+}
 
+#notifs {
+    color: var(--light-gray);
 }
 
 .aside #hide-aside-prompt.selected {
-    color: red !important;
+    color: var(--alert) !important;
 }
 
 .aside #hide-aside-prompt:hover {

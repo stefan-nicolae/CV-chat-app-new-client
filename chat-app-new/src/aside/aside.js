@@ -241,7 +241,7 @@ export default function Aside (props) {
         props.handleFileDrop(aside.current)
         scrollDown(asidePrompt)
     })
-
+    
     const newMessageAlert = (ID) => {
         setMessageAlert({id: ID})
     }
@@ -304,20 +304,28 @@ export default function Aside (props) {
                 })
             }
             <div className="friend add-friend">
-                <span className="plus"><iconify-icon icon="ant-design:plus-circle-twotone"></iconify-icon></span>
-                <input onKeyDown={event => handleInput(event)} placeholder="nickname_of_your_choice#their_ID"></input>
+                <span className="plus"><iconify-icon icon="ant-design:plus-circle-twotone"></iconify-icon>Add Friend...</span>
+                <input onKeyDown={event => handleInput(event)} placeholder="'nameofyourchoice#theirID', Enter"></input>
             </div>
             </div>
             <button onClick={() => {togglePromptVisibility()}}id="hide-aside-prompt"><iconify-icon icon="bi:arrow-bar-up"></iconify-icon></button>
+
+
             <div onClick={() => {
-                        document.querySelector("#hide-aside-prompt").classList.remove("selected")
-            }} ref={asidePrompt} style={{display: promptVisibility ? "unset" : "none"}}className="aside-prompt">
-                {
-                    promptArr.map(item => {
-                        return(<div key={promptItemKey++} className="aside-prompt-item">{item}</div>)
-                    })
-                }
+                    document.querySelector("#hide-aside-prompt").classList.remove("selected")
+            }} ref={asidePrompt} style={{display: promptVisibility ? "unset" : "none"}} className="aside-prompt">
+            {
+                promptArr.length > 0 ? (
+                    promptArr.map(item => (
+                        <div key={promptItemKey++} className="aside-prompt-item">{item}</div>
+                    ))
+                ) : (
+                    <p id="notifs">Notification Menu</p>
+                )
+            }
             </div>
+
+
         </div>
     ) : (
         <div className="aside"></div>

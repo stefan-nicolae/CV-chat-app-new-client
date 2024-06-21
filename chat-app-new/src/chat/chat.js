@@ -327,7 +327,7 @@ export default function Chat (props) {
             {alertFiles}
             <span className={"scroll-down" + (CLOSED ? " chat-closed": "")} onClick={() => scrollDown(chatMain)}><iconify-icon icon="ant-design:arrow-down-outlined"></iconify-icon> </span>
             <div className={"chat-input" + (CLOSED ? " chat-closed" : "")}>
-                <textarea onKeyDown={(event) => enterInput(event)} type="text"></textarea>
+                <textarea autoFocus placeholder="Write message & press Enter | drag and drop max 8MB file" onKeyDown={(event) => enterInput(event)} type="text"></textarea>
             </div>
         </div>
     ) : (

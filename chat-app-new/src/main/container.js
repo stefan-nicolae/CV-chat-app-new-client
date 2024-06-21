@@ -19,14 +19,14 @@ function handleFileDrop (element, callback = () => {}) {
     element.ondragleave = e => {
         e.preventDefault()
         if(element.className === "chat-main") {
-            element.style.borderColor = document.documentElement.style.getPropertyValue("--accent")
+            element.style.borderColor = document.documentElement.style.getPropertyValue("--black")
         }
     }
     element.ondrop = e => {
         e.preventDefault()
         e.stopPropagation()
         if(element.className === "chat-main") {
-            element.style.borderColor = document.documentElement.style.getPropertyValue("--accent")
+            element.style.borderColor = document.documentElement.style.getPropertyValue("--black")
         }
         callback(e)
     }

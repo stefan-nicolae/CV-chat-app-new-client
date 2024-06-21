@@ -1,12 +1,14 @@
 .alert-files {
-    background-color: var(--darker-gray);
-    border: 1px solid var(--accent);
+    background-color: var(--transparent-gray);
+    border: 1px solid var(--border);
     max-width: 500px;
     max-height: 300px;
     width: 50%;
     height: 50%;
     position: absolute;
-    top: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -26,27 +28,33 @@
 }
 
 .alert-files .file {
-    color: var(--shiny);
+    color: var(--black);
     width: 100px;
     height: 100px;
     margin-bottom: 10px;
     word-break: break-all;
     position: relative;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     scrollbar-width: thin;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    user-select: none;
 }
 
 .alert-files .close-file {
     cursor: pointer;
 }
 
+.alert-files .close-file:hover {
+    color: var(--alert);
+}
+
 .alert-files p {
     position: absolute;
-    width: 90px;
-    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 2px;
 }
 
 .alert-files .file-msg-p {
@@ -66,18 +74,16 @@
 .alert-files .send-files {
     position: absolute;
     background-color: unset;
-    border: 1px solid var(--shiny);
     border: none;
     bottom: -30px;
     right: 0;
-    color: var(--accent);
-    padding: 5px;
+
+    color: var(--black);
     cursor: pointer;
-    background-color: var(--dark-gray);
-    color: var(--shiny);
     height: 30px;
+    font-size: 20px;
 }
 
 .alert-files .send-files:hover {
-    color: white;
+    color: var(--black);
 }

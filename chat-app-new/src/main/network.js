@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const PRODUCTION = 1
+const PRODUCTION = 0
 let socket
 const SERVER_URL1 = "cv-chat-app-server.onrender.com"
 const SERVER_URL2 = "vladolteanu.com/stfn/chat-app"
@@ -8,8 +8,7 @@ let MYID
 let interval 
 let receivedRequestID
 
-
-if(!PRODUCTION) socket = new WebSocket("wss://" + "localhost:8082")
+if(!PRODUCTION) socket = new WebSocket("ws://" + "localhost:8082")
 else {
     if(window.localStorage.getItem("secondserver") !== "set") {
         socket = new WebSocket("wss://" + SERVER_URL1)  
