@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const PRODUCTION = 0
+const PRODUCTION = 1
 let socket
 const SERVER_URL1 = "cv-chat-app-server.onrender.com"
 const SERVER_URL2 = "vladolteanu.com/stfn/chat-app"

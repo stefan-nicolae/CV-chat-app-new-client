@@ -37,7 +37,7 @@ export default function Container () {
 
     const blockList = useRef({})
 
-    const [nickname, setNickname] = useState(enableStartup ? undefined : "default")
+    const [nickname, setNickname] = useState(enableStartup ? undefined : "user")
     const [MYID, setMYID] = useState()
     const [newMSG, setNewMSG] = useState()
     const [INTERLOCUTOR, setINTERLOCUTOR] = useState()
