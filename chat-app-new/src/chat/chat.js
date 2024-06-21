@@ -300,7 +300,7 @@ export default function Chat (props) {
     })
 
     const sendForceAddMessage = (ID) => {
-            if(chatID.length >= 8) Network.sendRequest({
+            if(chatID && chatID.length >= 8) Network.sendRequest({
                 "msgType": "forceAdd",
                 "senderID": ID,
                 "chatID": chatID,

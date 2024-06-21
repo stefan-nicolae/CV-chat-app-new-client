@@ -5,6 +5,7 @@
     background-color: var(--transparent-gray);
     margin-left: 20px;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .chat-main {
@@ -24,8 +25,12 @@
     margin-bottom: 10px;
     padding: 10px 15px;
     color: var(--black);
-   white-space: pre-line;
+    white-space: pre-line;
     border-radius: 10px
+}
+
+.message:has(.file-embed) {
+    max-width: 500px;
 }
 
 .message > a {
@@ -87,7 +92,7 @@
 .normal-file-embed:active {
     color: var(--black)
 }
-
+ 
 .video-file-embed, .image-file-embed {
     width: 100%;
     user-select: none;
@@ -103,12 +108,16 @@
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
+    /* right: 0; */
     max-width: unset;
     display: flex;
     align-items: center;
     padding: unset;
     flex-direction: column;
+    height: 100vh;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .fullscreen .image-file-embed {
@@ -117,7 +126,10 @@
     max-height: unset;
 }
 .fullscreen p {
-    font-size: 40px;
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    display: none;
 }
 .scroll-down {
     display: block;

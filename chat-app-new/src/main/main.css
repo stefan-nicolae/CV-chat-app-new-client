@@ -7,7 +7,7 @@
 
 
 :root {
-  --transparent-gray: rgba(122, 122, 122, 0.2);
+  --transparent-gray: rgba(122, 122, 122, 0.1);
   --black: rgb(41, 41, 41);
   --border: rgba(56, 56, 56, 0.1);
   --shiny: rgba(101, 102, 145, 0.13);
@@ -19,7 +19,7 @@
   
   --enemy-background: rgb(117, 117, 117);
   --s-enemy-background:rgb(97, 97, 97);
-  --enemy-text: rgb(87, 87, 87);
+  --enemy-text: rgb(146, 146, 146);
   --enemy-id-background: var(--black);
 }
 
