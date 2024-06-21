@@ -7,6 +7,7 @@
     flex-direction: column;
     border-radius: 8px;
     position: relative;
+    user-select: none;
 }
 
 .aside .uid {
@@ -19,6 +20,7 @@
     justify-content: center;
     height: 40px;
     border-radius: 8px;
+    user-select: text;
 }
 
 .aside .friends {
@@ -29,7 +31,6 @@
     padding: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
-
 }
 
 .aside .friend {
@@ -48,6 +49,7 @@
 .aside .friend p {
     width: 90%;
     word-wrap: break-word;
+    user-select: text;
 }
 
 .aside .close-friend {
@@ -70,6 +72,7 @@
     display: none;
     padding: 3px;
     border-radius: 5px;
+    user-select: text;
 }
 
 .aside .friend:hover .friend-id {
