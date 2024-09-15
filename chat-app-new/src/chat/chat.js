@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react"
 import * as MessageStore from "./message-store"
 import { URLkeywords, chatID } from '../parameters.js';
 
-function generateFileEmbed (file, addFullscreen) {
+function generateFileEmbed (file, className) {
     const getEmbedFileType = dataURI => {
         return(dataURI.slice(dataURI.indexOf(":")+1, dataURI.indexOf(";"))) 
     }
@@ -20,7 +20,7 @@ function generateFileEmbed (file, addFullscreen) {
         case "video":
             return(<VideoFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} />)
         case "image":
-            return(<ImageFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} addFullscreen={addFullscreen}/>) 
+            return(<ImageFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} className={className} />) 
         default:
             return(<></>)
     }

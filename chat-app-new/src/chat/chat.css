@@ -114,16 +114,25 @@
     align-items: center;
     padding: unset;
     flex-direction: column;
-    height: 100vh;
+    max-height: 100vh;
     min-width: 100%;
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 
 .fullscreen .image-file-embed {
-    max-width: unset;
-    width: 80%;
-    max-height: unset;
+    /* max-width: 80%; */
+    /* max-height: 100vh; */
+    height: 100vh;
+    width: unset;
+    height: unset;
+    cursor: pointer;
+}
+
+.message.me.fullscreen {
+    background-color: rgba(0, 0, 0, 0.432) !important;
+    height: 100vh;
 }
 .fullscreen p {
     font-size: 20px;

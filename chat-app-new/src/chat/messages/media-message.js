@@ -21,9 +21,11 @@ export default function MediaMessage (props) {
         }
     }
     
-    return(<div className={className}>
+    return(<div className={className} onClick={
+        () => props.file.fileType === "image" ?  addFullscreen(className, setClassName, props.scroll, props.resetScroll)  : {} //addFullscreen Here, only if file type is image
+    }>
         {props.file.fileType !== "file" ? 
-        props.generateFileEmbed(props.file, () => addFullscreen(className, setClassName, props.scroll, props.resetScroll)) : 
+        props.generateFileEmbed(props.file, className) : 
         <NormalFileEmbed file={props.file}/>}
     </div>)
 }
