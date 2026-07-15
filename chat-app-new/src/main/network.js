@@ -4,10 +4,9 @@ const PRODUCTION = 0
 let socket
 const SERVER_URL1 = "vladolteanu.com/stfn/chat-app"
 let MYID
-let interval 
 let receivedRequestID
 
-if(!PRODUCTION) socket = new WebSocket("ws://" + "localhost:8082")
+if(!PRODUCTION) socket = new WebSocket("ws://localhost:8082")
 else {
         socket = new WebSocket("wss://" + SERVER_URL1)  
         setTimeout(() => {
@@ -19,11 +18,13 @@ else {
 }
     
 export function chatHasOpened() {
-    clearInterval(interval)
+    // Kept for compatibility with existing callers.
 }
 
 export function sendRequest(request) {
+    if(socket.readyState !== WebSocket.OPEN) return false
     socket.send(JSON.stringify(request))
+    return true
 }
 
 socket.addEventListener("open", () => {
@@ -49,18 +50,20 @@ export function waitForRequestID(requestID, callback=()=>{}, errorCallback=()=>{
 }
 
 export default function Network (props) {
+    const { receiveRequest, setMYID } = props
     useEffect(() => {
-        interval = setInterval(() => {
-            if(MYID !== undefined) {
-                props.setMYID(MYID)
+        const handleMessage = data => {
+            let msg
+            try {
+                msg = JSON.parse(data.data)
+            } catch (error) {
+                console.error("Ignored malformed WebSocket message", error)
+                return
             }
-        }, 10)
-
-        socket.addEventListener("message", data => {
-            const msg = JSON.parse(data.data)
             switch(msg.msgType) {
                 case "yourID":
                     MYID = msg.ID
+                    setMYID(MYID)
                     sendRequest({
                         "msgType": "MYID_RECEIVED",
                         "senderID": MYID
@@ -70,11 +73,13 @@ export default function Network (props) {
                     receivedRequestID = msg.requestID
                     break
                 default: 
-                    props.receiveRequest(msg)
+                    receiveRequest(msg)
                     break
             }
-        })
-        
-    }, [])
+        }
+
+        socket.addEventListener("message", handleMessage)
+        return () => socket.removeEventListener("message", handleMessage)
+    }, [receiveRequest, setMYID])
     return(<></>)
 }

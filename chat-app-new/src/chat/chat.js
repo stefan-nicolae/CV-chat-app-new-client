@@ -252,7 +252,7 @@ export default function Chat (props) {
     }
 
     useEffect(() => {
-        props.handleFileDrop(chatMain.current, (e) => {
+        const cleanupChatMainDrop = props.handleFileDrop(chatMain.current, (e) => {
             const newDataURI = e.dataTransfer.getData("text/plain")
             let newTitle = e.dataTransfer.getData("title")
             newTitle = newTitle.slice(newTitle.lastIndexOf("/") + 1)
@@ -270,7 +270,7 @@ export default function Chat (props) {
                 if(!CLOSED) setAlertFiles(<AlertFiles CLOSED={CLOSED} closeAlertFiles={closeAlertFiles} files={files} handleFileDrop={props.handleFileDrop} seed={seed} sendFiles={sendFiles} generateFileEmbed={generateFileEmbed}/>)
             })
         })
-        props.handleFileDrop(chatEmpty.current)
+        const cleanupChatEmptyDrop = props.handleFileDrop(chatEmpty.current)
         
         if(newMessage.current && lastScrollBeforeMessage.current <= scrollDelta) {
             if(newMessage.current === 1) scrollDown(chatMain)
@@ -285,6 +285,10 @@ export default function Chat (props) {
         } else if (scrollToBeReset.current === 0 && chatMain.current) {
             scrollToBeReset.current = -1
             scrollDown(chatMain)
+        }
+        return () => {
+            cleanupChatMainDrop()
+            cleanupChatEmptyDrop()
         }
     })
 

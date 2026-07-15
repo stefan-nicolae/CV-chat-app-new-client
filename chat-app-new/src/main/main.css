@@ -30,6 +30,10 @@
   font-family: 'HelveticaRegular', 'Open Sans', sans-serif;
 }
 
+[draggable="true"] {
+  -webkit-user-drag: none;
+}
+
 .container {
   padding: 20px;
   height: 100vh;

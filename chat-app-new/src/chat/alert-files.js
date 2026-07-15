@@ -56,6 +56,7 @@ function addFiles(files, propsFiles, setFiles) {
 }
 
 export default function AlertFiles (props) {
+    const { handleFileDrop } = props
     const [files, setFiles] = useState([])
     const alertFiles = useRef()
     const lastSeed = useRef()
@@ -67,8 +68,8 @@ export default function AlertFiles (props) {
     }
 
     useEffect(() => {
-        props.handleFileDrop(alertFiles.current)
-    }, [])
+        return handleFileDrop(alertFiles.current)
+    }, [handleFileDrop])
     
     return (
         <div className="alert-files" ref={alertFiles} data-identifier="4">

@@ -61,21 +61,19 @@ export default function Aside (props) {
     const [promptArr, setPromptArr] = useState(defaultPromptArr)
     const [messageAlert, setMessageAlert] = useState()
     const [promptVisibility, setPromptVisibility] = useState(true)
+    const [hasUnreadPrompt, setHasUnreadPrompt] = useState(false)
     const promptInformation = props.asidePromptInformation
     const updatePromptArr = item => {
-        const newPromptArr = []
-        if(promptArr.length) newPromptArr.push(promptArr)
-        newPromptArr.push(item)
-        document.querySelector("#hide-aside-prompt").classList.add("selected")
-        setPromptArr(
-            newPromptArr
-        )
+        setPromptArr(current => [...current, item])
+        setHasUnreadPrompt(true)
     }
 
-    if(promptInformation !== lastPromptInformation.current) {
-        lastPromptInformation.current = promptInformation
-        updatePromptArr(promptInformation)
-    }
+    useEffect(() => {
+        if(promptInformation !== undefined && promptInformation !== lastPromptInformation.current) {
+            lastPromptInformation.current = promptInformation
+            updatePromptArr(promptInformation)
+        }
+    }, [promptInformation])
 
     const addPeer= (id, nickname) => {
         let pass = true
@@ -238,8 +236,9 @@ export default function Aside (props) {
     }
 
     useEffect(() => {
-        props.handleFileDrop(aside.current)
+        const cleanupFileDrop = props.handleFileDrop(aside.current)
         scrollDown(asidePrompt)
+        return cleanupFileDrop
     })
     
     const newMessageAlert = (ID) => {
@@ -286,7 +285,7 @@ export default function Aside (props) {
     }
 
     const togglePromptVisibility = () => {
-        document.querySelector("#hide-aside-prompt").classList.remove("selected")
+        setHasUnreadPrompt(false)
         if(promptVisibility) setPromptVisibility(false)
         else setPromptVisibility(true)
     }
@@ -308,11 +307,11 @@ export default function Aside (props) {
                 <input onKeyDown={event => handleInput(event)} placeholder="'nameofyourchoice#theirID', Enter"></input>
             </div>
             </div>
-            <button onClick={() => {togglePromptVisibility()}}id="hide-aside-prompt"><iconify-icon icon="bi:arrow-bar-up"></iconify-icon></button>
+            <button onClick={() => {togglePromptVisibility()}} id="hide-aside-prompt" className={hasUnreadPrompt ? "selected" : ""}><iconify-icon icon="bi:arrow-bar-up"></iconify-icon></button>
 
 
             <div onClick={() => {
-                    document.querySelector("#hide-aside-prompt").classList.remove("selected")
+                    setHasUnreadPrompt(false)
             }} ref={asidePrompt} style={{display: promptVisibility ? "unset" : "none"}} className="aside-prompt">
             {
                 promptArr.length > 0 ? (

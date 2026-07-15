@@ -19,6 +19,10 @@
     border-radius: 8px;
 }
 
+.chat-main.dragging {
+    border-color: rgb(174, 181, 194);
+}
+
 .message {
     word-wrap: break-word;
     max-width: 70%;

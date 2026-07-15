@@ -1,16 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ImageFileEmbed(props) {
   // Reference to the image DOM element
   const image = useRef(null);
-console.log(props.className)
+  const [imageStyle, setImageStyle] = useState({ width: "100%", height: "auto" });
 
 useEffect(() => {
     const handleResize = () => {
       if (image.current) {
         // Check if fullscreen class is present
         if (props.className && props.className.includes('fullscreen')) {
-          console.log('resizing fullscreen');
           const winWidth = window.innerWidth;
           const winHeight = window.innerHeight;
           const winAspectRatio = winWidth / winHeight;
@@ -20,18 +19,12 @@ useEffect(() => {
           const imgAspectRatio = imgWidth / imgHeight;
 
           if (imgAspectRatio <= winAspectRatio) {
-            // Image height = 90vh (90% of the viewport height)
-            image.current.style.height = '90vh';
-            image.current.style.width = 'auto'; // Maintain aspect ratio
+            setImageStyle({ height: "90vh", width: "auto" });
           } else {
-            // Image width = 90% (height will adjust automatically)
-            image.current.style.height = 'auto'; // Maintain aspect ratio
-            image.current.style.width = '90%';
+            setImageStyle({ height: "auto", width: "90%" });
           }
         } else {
-          // Handle non-fullscreen case
-          image.current.style.width = '100%';
-          image.current.style.height = 'auto';
+          setImageStyle({ width: "100%", height: "auto" });
         }
       }
     };
@@ -54,14 +47,9 @@ useEffect(() => {
       <img
         ref={image}
         className="file-embed image-file-embed"
+        style={imageStyle}
         src={props.file.dataURI}
         alt={props.file.fileName}
-        onLoad={() => {
-          // Recalculate on image load
-        //   const imgWidth = image.current.naturalWidth;
-        //   const imgHeight = image.current.naturalHeight;
-        //   console.log("Image loaded:", imgWidth, imgHeight);
-        }}
       />
     </>
   );

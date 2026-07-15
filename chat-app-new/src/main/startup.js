@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react"
 export default function Startup (props) {
     const startup = useRef()
     useEffect(() => {
-        props.handleFileDrop(startup.current)
+        return props.handleFileDrop(startup.current)
     })
 
     const setNickname = event => {

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useCallback, useState, useRef } from "react"
 import Startup from "./startup"
 import Chat from "../chat/chat"
 import Aside from "../aside/aside"
@@ -6,30 +6,44 @@ import Network from "./network"
 import "./main.css"
 import { URLkeywords } from '../parameters.js';
 
-const fileDropHandled = {}
+const fileDropCleanups = new WeakMap()
 function handleFileDrop (element, callback = () => {}) {
-    if(element === null || element === undefined || element.dataset.identifier === undefined || fileDropHandled[element.dataset.identifier] === true) return
-    fileDropHandled[element.dataset.identifier] = true
-    element.ondragover = e => {
-        e.preventDefault()
-        if(element.className === "chat-main") {
-            element.style.borderColor = "rgb(174, 181, 194)";
+    if(!element) return () => {}
+
+    fileDropCleanups.get(element)?.()
+    const setDragging = active => {
+        if(element.classList.contains("chat-main")) {
+            element.classList.toggle("dragging", active)
         }
     }
-    element.ondragleave = e => {
+    const handleDragOver = e => {
         e.preventDefault()
-        if(element.className === "chat-main") {
-            element.style.borderColor = document.documentElement.style.getPropertyValue("--black")
-        }
+        setDragging(true)
     }
-    element.ondrop = e => {
+    const handleDragLeave = e => {
+        e.preventDefault()
+        setDragging(false)
+    }
+    const handleDrop = e => {
         e.preventDefault()
         e.stopPropagation()
-        if(element.className === "chat-main") {
-            element.style.borderColor = document.documentElement.style.getPropertyValue("--black")
-        }
+        setDragging(false)
         callback(e)
     }
+
+    element.addEventListener("dragover", handleDragOver)
+    element.addEventListener("dragleave", handleDragLeave)
+    element.addEventListener("drop", handleDrop)
+
+    const cleanup = () => {
+        element.removeEventListener("dragover", handleDragOver)
+        element.removeEventListener("dragleave", handleDragLeave)
+        element.removeEventListener("drop", handleDrop)
+        setDragging(false)
+        fileDropCleanups.delete(element)
+    }
+    fileDropCleanups.set(element, cleanup)
+    return cleanup
 }
 
 export default function Container () {
@@ -45,23 +59,9 @@ export default function Container () {
     const [asidePromptInformation, addToAsidePrompt] = useState() 
     const [isItScrolledDown, set_isItScrolledDown] = useState()
 
-    useEffect(() => {
-        document.querySelectorAll("*").forEach(component => {
-            component.ondragstart = e => e.preventDefault()
-        })
-
-        const script = document.createElement('script');
-        script.src = "https://code.iconify.design/iconify-icon/1.0.0-beta.3/iconify-icon.min.js";
-        script.async = true;
-        document.body.appendChild(script);
-        return () => {
-          document.body.removeChild(script);
-        }
-    }, [])
-
-    const receiveRequest = (request) => {
+    const receiveRequest = useCallback((request) => {
         setRequestReceived(request)
-    }
+    }, [])
 
     return nickname ? (
         <div className="container container-main">

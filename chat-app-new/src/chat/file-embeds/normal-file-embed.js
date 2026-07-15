@@ -13,6 +13,7 @@ function downloadBlob (blob, name = 'file.txt') {
         })
     );
     document.body.removeChild(link);
+    URL.revokeObjectURL(blobUrl);
 }
 
 function dataURItoBlob (dataURI) {
