@@ -72,28 +72,17 @@ function fileArrToFileStructArr (fileArr, callbackFn) {
     f(fileArr, 0)
 }
 
-var decodeBase64 = function(s) {
-    var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
-    var A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    for(i=0;i<64;i++){e[A.charAt(i)]=i;}
-    for(x=0;x<L;x++){
-        c=e[s.charAt(x)];b=(b<<6)+c;l+=6;
-        while(l>=8){((a=(b>>>(l-=8))&0xff)||(x<(L-2)))&&(r+=w(a));}
-    }
-    return r;
-};
-
 function dataURISizeInMB (dataURI) {
-    let base64str = dataURI.substr(22);
-    let decoded = decodeBase64(base64str)
-    return decoded.length/1024/1024
+    const base64 = dataURI.slice(dataURI.indexOf(",") + 1).replace(/\s/g, "")
+    const padding = base64.endsWith("==") ? 2 : base64.endsWith("=") ? 1 : 0
+    return ((base64.length * 3 / 4) - padding) / 1024 / 1024
 }
 
 let globalInterlocutor, CLOSED, ID 
 
 export default function Chat (props) {
     const enableDefaultMessages = (URLkeywords.includes("defaults"))
-    const fileSizeLimit = 8 
+    const fileSizeLimit = 1 
     const scrollDelta = 500
 
     const [alertFiles, setAlertFiles] = useState()
@@ -327,7 +316,7 @@ export default function Chat (props) {
             {alertFiles}
             <span className={"scroll-down" + (CLOSED ? " chat-closed": "")} onClick={() => scrollDown(chatMain)}><iconify-icon icon="ant-design:arrow-down-outlined"></iconify-icon> </span>
             <div className={"chat-input" + (CLOSED ? " chat-closed" : "")}>
-                <textarea autoFocus placeholder="Write message & press Enter | drag and drop max 8MB file" onKeyDown={(event) => enterInput(event)} type="text"></textarea>
+                <textarea autoFocus placeholder="Write message & press Enter | drag and drop max 1MB file" onKeyDown={(event) => enterInput(event)} type="text"></textarea>
             </div>
         </div>
     ) : (
