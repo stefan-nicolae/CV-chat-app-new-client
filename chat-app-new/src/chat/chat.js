@@ -5,6 +5,7 @@ import AlertFiles from "./alert-files"
 import AudioFileEmbed from "./file-embeds/audio-file-embed"
 import VideoFileEmbed from "./file-embeds/video-file-embed"
 import ImageFileEmbed from "./file-embeds/image-file-embed"
+import NormalFileEmbed from "./file-embeds/normal-file-embed"
 import * as Network from "../main/network" 
 import { useEffect, useRef, useState } from "react"
 import * as MessageStore from "./message-store"
@@ -21,6 +22,8 @@ function generateFileEmbed (file, className) {
             return(<VideoFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} />)
         case "image":
             return(<ImageFileEmbed file={file} embedFileType={getEmbedFileType(file.dataURI)} className={className} />) 
+        case "file":
+            return(<NormalFileEmbed file={file} />)
         default:
             return(<></>)
     }
